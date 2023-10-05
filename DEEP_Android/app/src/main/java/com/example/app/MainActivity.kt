@@ -7,12 +7,14 @@ import android.nfc.NdefRecord
 import android.nfc.NfcAdapter
 import android.nfc.Tag
 import android.nfc.tech.Ndef
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -32,6 +34,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -47,6 +50,7 @@ class MainActivity : ComponentActivity() {
 
     val viewModel : MainViewModel by viewModels()
 
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -68,7 +72,9 @@ class MainActivity : ComponentActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
 
-        if (NfcAdapter.ACTION_NDEF_DISCOVERED == intent.action) {
+        Log.d(TAG, "onNewIntent: ${intent}")
+
+        if (NfcAdapter.ACTION_NDEF_DISCOVERED == intent.action || NfcAdapter.ACTION_TAG_DISCOVERED == intent.action) {
 //            val ndefMessage = createNdefMessage("https://www.github.com/PARAOOO") // 원하는 URL로 변경
 //            writeNdefMessageToTag(intent, ndefMessage)
             viewModel.intent = intent
@@ -95,19 +101,19 @@ class MainActivity : ComponentActivity() {
             Log.d(TAG, "writeNdefMessageToTag: ${ e.printStackTrace() }")
             viewModel.isFail = true
         } finally {
+            viewModel.isSuccessed = !viewModel.isFail
+            viewModel.isFail = false
+            viewModel.updateIsConnected(false)
+            lifecycleScope.launchWhenStarted {
+                viewModel.successEvent.emit(viewModel.isSuccessed!!)
+            }
             try {
                 ndef.close()
                 Log.d(TAG, "writeNdefMessageToTag: NDEF가 종료되었ㅅ브니다")
 
-                viewModel.isSuccessed = !viewModel.isFail
-                viewModel.isFail = false
-                viewModel.updateIsConnected(false)
-
             } catch (e: IOException) {
                 e.printStackTrace()
                 Log.d(TAG, "writeNdefMessageToTag: ${ e.printStackTrace() }")
-                viewModel.isFail = false
-                viewModel.updateIsConnected(false)
             }
         }
     }
@@ -129,6 +135,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.P)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreenView(mainViewModel: MainViewModel){
@@ -160,7 +167,7 @@ fun MainScreenView(mainViewModel: MainViewModel){
 fun BottomNavigation(navController: NavController){
 
     val items = listOf<BottomNavItem>(
-        BottomNavItem.Create,
+        BottomNavItem.PutNfc,
         BottomNavItem.CardList,
         BottomNavItem.Profile
     )

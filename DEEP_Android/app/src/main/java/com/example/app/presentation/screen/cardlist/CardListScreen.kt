@@ -53,7 +53,9 @@ import com.example.deep_android.R
 import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 @Composable
-fun CardListScreen(navController: NavController){
+fun CardListScreen(
+    navController: NavController
+){
 
     Column(
         modifier = Modifier

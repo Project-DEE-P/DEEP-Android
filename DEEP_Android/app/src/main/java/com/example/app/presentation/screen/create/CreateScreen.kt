@@ -28,7 +28,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -68,29 +70,26 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.window.Dialog
 import androidx.core.app.ActivityCompat
+import com.example.app.presentation.screen.cardlist.DeepTopBar
 
 @RequiresApi(Build.VERSION_CODES.P)
 @Composable
-fun CreateScreen(navController: NavController, mainViewModel: MainViewModel, alert: (@Composable () -> Unit) -> Unit){
+fun CreateScreen(navController: NavController){
 
-    val text by rememberUpdatedState(newValue = mainViewModel.text)
-    val textColor by rememberUpdatedState(newValue = mainViewModel.textColor)
-    val isButtonEnabled by rememberUpdatedState(newValue = mainViewModel.isButtonEnabled)
+
     val context = LocalContext.current
 
-    var isShowAlert by remember { mutableStateOf(false) }
-    val isSuccessed by rememberUpdatedState(newValue = mainViewModel.isSuccessed)
-
-    val isBitmapRatioOk by rememberUpdatedState(newValue = mainViewModel.isBitmapRatioOk)
+    var isBitmapRatioOk by remember { mutableStateOf<Boolean>(false) }
 
 //    var image by remember{ mutableStateOf<MultiPart>() }
     var bitmap by remember{ mutableStateOf<Bitmap?>(null) }
     var imageUri by remember{ mutableStateOf<Uri?>(null) }
 
     val activity = context as? ComponentActivity
-    val coroutineScope = rememberCoroutineScope()
 
     var requestImageFromExternalStorage : ManagedActivityResultLauncher<String,Uri?>? = null
+
+    val scrollState = rememberScrollState()
 
 
     requestImageFromExternalStorage = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
@@ -110,34 +109,8 @@ fun CreateScreen(navController: NavController, mainViewModel: MainViewModel, ale
             val minRatio = 85.0/55.0
             val maxRaio = 90.0/50.0
 
-            mainViewModel.isBitmapRatioOk = (bitmapRatio >= minRatio && bitmapRatio <= maxRaio)
-            mainViewModel.isButtonEnabled = (bitmapRatio >= minRatio && bitmapRatio <= maxRaio) && mainViewModel.isConnected
+            isBitmapRatioOk = (bitmapRatio >= minRatio && bitmapRatio <= maxRaio)
 
-        }
-    }
-
-    LaunchedEffect(isSuccessed) {
-        if(isSuccessed != null){
-            if (isSuccessed!!) {
-                isShowAlert = true
-                alert {
-                    ConnectDialog(
-                        text = "명함 등록에 성공했습니다",
-                        onClick = { isShowAlert = false },
-                        isShow = isShowAlert
-                    )
-                }
-
-            } else {
-                isShowAlert = true
-                alert {
-                    ConnectDialog(
-                        text = "명함 등록에 실패했습니다",
-                        onClick = { isShowAlert = false },
-                        isShow = isShowAlert
-                    )
-                }
-            }
         }
     }
 
@@ -149,27 +122,27 @@ fun CreateScreen(navController: NavController, mainViewModel: MainViewModel, ale
     ) {
 
         DeepTopBar({}, {})
+        Column(
+            modifier = Modifier
+                .verticalScroll(scrollState)
+        ){
+            CreateView(
+                activity,
+                requestImageFromExternalStorage,
+                bitmap,
+                isBitmapRatioOk
+            )
 
-        CreateView(
-            activity,
-//            imagePicker,
-            requestImageFromExternalStorage,
-            bitmap,
-            isBitmapRatioOk
-        )
+            Spacer(
+                modifier = Modifier
+                    .height(100.dp)
+            )
 
-        CreateButton({
-
-            Log.d(TAG, "CreateScreen: intent : ${mainViewModel.intent} ")
-
-            if(mainViewModel.intent != null){
-                val ndefMessage =
-                    (activity as MainActivity).createNdefMessage("https://www.github.com/PARAOOO")
-                (activity as MainActivity).writeNdefMessageToTag(mainViewModel.intent!!, ndefMessage)
-            }
-
-        },
-        text,textColor, isButtonEnabled)
+            CreateButton(
+                {navController.popBackStack()},
+                isBitmapRatioOk
+            )
+        }
     }
 
 }
@@ -188,39 +161,14 @@ fun PreviewCreateScreen(){
         DeepTopBar({}, {})
 
         CreateView(
-            activity = LocalContext.current as ComponentActivity,
+            activity = LocalContext.current as? ComponentActivity,
 //            rememberImagePicker(onImage = {}),
             rememberLauncherForActivityResult(ActivityResultContracts.GetContent()){},
             null,
             false
         )
 
-        CreateButton({},"", Color.White,true)
-    }
-}
-
-@Composable
-fun DeepTopBar(
-    onLogoClick : () -> Unit,
-    onCategoryClick : () -> Unit
-){
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 18.dp, vertical = 20.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Image(
-            modifier = Modifier.height(17.dp),
-            painter = painterResource(id = R.drawable.logo_deep),
-            contentDescription = "DEEP 로고입니다"
-        )
-
-        Image(
-            modifier = Modifier.height(17.dp),
-            painter = painterResource(id = R.drawable.ic_hamburger),
-            contentDescription = "카테고리 버튼입니다"
-        )
+        CreateButton({},false)
     }
 }
 
@@ -238,7 +186,7 @@ fun CreateView(
             .padding(horizontal = 18.dp)
     ) {
         Text(
-            text = "NFC 태그에 명함 넣기",
+            text = "명함 만들기",
             color = Color.Black,
             fontFamily = deepFontFamily,
             fontWeight = FontWeight.Bold,
@@ -299,9 +247,7 @@ fun CreateView(
 @Composable
 fun CreateButton(
     onCreateClick : () -> Unit,
-    text : String,
-    textColor : Color,
-    isButtonEnabled : Boolean
+    isBitmapRatioOk: Boolean
 ){
     Column(
         modifier = Modifier
@@ -316,10 +262,10 @@ fun CreateButton(
             colors = ButtonDefaults.buttonColors(containerColor = DeepBlue),
             shape = RoundedCornerShape(16.dp),
             contentPadding = PaddingValues(vertical = 12.dp),
-            enabled = isButtonEnabled
+            enabled = isBitmapRatioOk
         ) {
             Text(
-                text = "명함 넣기",
+                text = "명함 만들기",
                 color = Color.White,
                 fontFamily = deepFontFamily,
                 fontWeight = FontWeight.Medium,
@@ -329,84 +275,9 @@ fun CreateButton(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        Text(
-            text = text,
-            color = textColor,
-            fontFamily = deepFontFamily,
-            fontWeight = FontWeight.Medium,
-            fontSize = 12.sp
-        )
-
-        Spacer(modifier = Modifier.height(20.dp))
-
     }
 }
 
-
-@Preview
-@Composable
-fun PreviewDialog(){
-    ConnectDialog("명함 등록에 성공했습니다",{},false)
-}
-
-@Composable
-fun ConnectDialog(
-    text : String,
-    onClick : () -> Unit,
-    isShow : Boolean,
-){
-    if(isShow){
-        Dialog(
-            onDismissRequest = onClick,
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-                    .padding(horizontal = 30.dp)
-                    .clip(RoundedCornerShape(16.dp))
-                    .background(color = Color.White),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                Text(
-                    text = text,
-                    color = Color.Black,
-                    fontFamily = deepFontFamily,
-                    fontWeight = FontWeight.Normal,
-                    fontSize = 18.sp
-                )
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                TextButton(
-                    onClick = onClick,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(30.dp)
-                        .padding(horizontal = 40.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = DeepBlue),
-                    shape = RoundedCornerShape(16.dp),
-                    contentPadding = PaddingValues(vertical = 0.dp),
-                ) {
-                    Text(
-                        text = "확인",
-                        color = Color.White,
-                        fontFamily = deepFontFamily,
-                        fontWeight = FontWeight.Medium,
-                        fontSize = 14.sp
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-            }
-        }
-    }
-
-}
 
 @RequiresApi(Build.VERSION_CODES.P)
 private fun Uri.uriToBitmap(context: Context): Bitmap {
