@@ -9,6 +9,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.compose.runtime.*
 import androidx.lifecycle.viewmodel.compose.viewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 
 class MainViewModel : ViewModel() {
 
@@ -17,18 +18,18 @@ class MainViewModel : ViewModel() {
     var textColor by mutableStateOf(Color.Red)
     var isButtonEnabled by mutableStateOf(false)
 
+    val successEvent = MutableSharedFlow<Boolean>()
+
     var isFail = false
     var isSuccessed : Boolean? by mutableStateOf(null)
 
     var nfcAdapter : NfcAdapter? = null
 
-    var isBitmapRatioOk by mutableStateOf(false)
-
     var intent : Intent? = null
 
     fun updateIsConnected(isConnected : Boolean){
         this.isConnected = isConnected
-        isButtonEnabled = isConnected && isBitmapRatioOk
+        isButtonEnabled = isConnected
         if(isConnected){
             text = "NFC가 연결되었습니다"
             textColor = Color.Gray
@@ -38,5 +39,7 @@ class MainViewModel : ViewModel() {
             textColor = Color.Red
         }
     }
+
+
 
 }
