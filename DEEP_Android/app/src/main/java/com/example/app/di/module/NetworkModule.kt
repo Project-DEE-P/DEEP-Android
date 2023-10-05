@@ -1,6 +1,7 @@
 package com.example.app.di.module
 
 import com.example.data.network.api.CardApi
+import com.example.data.remote.api.UserApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,6 +24,11 @@ class NetworkModule {
     @Singleton
     fun provideCardApi(retrofit: Retrofit): CardApi =
         retrofit.create(CardApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideUserApi(retrofit: Retrofit): UserApi =
+        retrofit.create(UserApi::class.java)
 
     /* Retrofit Object 생성 */
 

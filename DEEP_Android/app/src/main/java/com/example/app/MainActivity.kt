@@ -42,6 +42,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.app.presentation.navigation.BottomNavItem
 import com.example.app.presentation.navigation.NavGraph
 import com.example.app.presentation.screen.start.StartScreen
+import com.example.app.presentation.screen.start.StartViewModel
 import com.example.app.ui.theme.Blue100
 import com.example.app.ui.theme.DEEP_AndroidTheme
 import com.example.app.ui.theme.DeepBlue
@@ -49,18 +50,21 @@ import com.example.app.util.TAG
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.common.api.ApiException
+import dagger.hilt.android.AndroidEntryPoint
 import java.io.IOException
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     val viewModel : MainViewModel by viewModels()
+    val startViewModel : StartViewModel by viewModels()
 
     @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             DEEP_AndroidTheme {
-                StartScreen(this)
+                StartScreen(this, startViewModel)
 //                MainScreenView(viewModel)
             }
         }
