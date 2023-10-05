@@ -1,7 +1,9 @@
 package com.example.app.di.module
 
 import com.example.data.network.repository.CardRepositoryImpl
+import com.example.data.repository.UserRepositoryImpl
 import com.example.domain.repository.CardRepository
+import com.example.domain.repository.UserRepository
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -19,5 +21,11 @@ class RepositoryModule {
         impl : CardRepositoryImpl
     ): CardRepository = impl
 
+
+    @Provides
+    @Singleton
+    fun provideUserRepository(
+        impl : UserRepositoryImpl
+    ): UserRepository = impl
 
 }

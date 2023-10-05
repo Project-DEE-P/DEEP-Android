@@ -52,30 +52,33 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.Scope
 import com.google.android.gms.common.api.internal.RegisterListenerMethod
 import com.google.android.gms.tasks.Task
+import dagger.hilt.android.AndroidEntryPoint
 import java.lang.Exception
+
 
 @Composable
 fun StartScreen(
-    activity: Activity
+    activity: Activity,
+    viewModel: StartViewModel
 ) {
 
     var account: GoogleSignInAccount
     var authCode: String
 
-    val googleAuthLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        runCatching {
-            val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
-            account = task.getResult(ApiException::class.java)
-//            authCode = account.serverAuthCode.toString()
-//            Log.d(TAG, "Google Oauth Success!! $authCode")
-        }.onSuccess {
-            Log.d(TAG, "Google Oauth Success!!")
-            Toast.makeText(activity, "로그인이 되었습니다", Toast.LENGTH_SHORT).show()
-        }.onFailure { e ->
-            Log.d(TAG, "Google Oauth Failed.." + e.stackTraceToString())
-            Toast.makeText(activity, "로그인에 실패했습니다", Toast.LENGTH_SHORT).show()
-        }
-    }
+//    val googleAuthLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+//        runCatching {
+//            val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+//            account = task.getResult(ApiException::class.java)
+////            authCode = account.serverAuthCode.toString()
+////            Log.d(TAG, "Google Oauth Success!! $authCode")
+//        }.onSuccess {
+//            Log.d(TAG, "Google Oauth Success!!")
+//            Toast.makeText(activity, "로그인이 되었습니다", Toast.LENGTH_SHORT).show()
+//        }.onFailure { e ->
+//            Log.d(TAG, "Google Oauth Failed.." + e.stackTraceToString())
+//            Toast.makeText(activity, "로그인에 실패했습니다", Toast.LENGTH_SHORT).show()
+//        }
+//    }
 
     Column(
         modifier = Modifier
@@ -99,8 +102,10 @@ fun StartScreen(
             colors = ButtonDefaults.buttonColors(backgroundColor = Color.White),
             shape = RoundedCornerShape(16.dp),
             onClick = {
-                val googleOauth = GoogleOauth(activity, googleAuthLauncher)
-                googleOauth.requestGoogleLogin()
+                // todo
+                viewModel.googleOauthLogin()
+//                val googleOauth = GoogleOauth(activity, googleAuthLauncher)
+//                googleOauth.requestGoogleLogin()
             },
         ) {
             Icon(

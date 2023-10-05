@@ -42,6 +42,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.app.presentation.navigation.BottomNavItem
 import com.example.app.presentation.navigation.NavGraph
 import com.example.app.presentation.screen.start.StartScreen
+import com.example.app.presentation.screen.start.StartViewModel
 import com.example.app.ui.theme.Blue100
 import com.example.app.ui.theme.DEEP_AndroidTheme
 import com.example.app.ui.theme.DeepBlue
@@ -56,14 +57,15 @@ import java.io.IOException
 class MainActivity : ComponentActivity() {
 
     val viewModel : MainViewModel by viewModels()
+    val startViewModel : StartViewModel by viewModels()
 
     @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             DEEP_AndroidTheme {
-//                StartScreen(this)
-                MainScreenView(viewModel)
+                StartScreen(this, startViewModel)
+//                MainScreenView(viewModel)
             }
         }
 

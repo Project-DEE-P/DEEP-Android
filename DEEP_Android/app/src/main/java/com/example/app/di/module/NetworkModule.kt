@@ -2,6 +2,7 @@ package com.example.app.di.module
 
 import com.example.app.di.BASE_URL
 import com.example.data.network.api.CardApi
+import com.example.data.remote.api.UserApi
 import com.ggd.qualifier.HeaderInterceptor
 import dagger.Module
 import dagger.Provides
@@ -25,6 +26,11 @@ class NetworkModule {
     @Singleton
     fun provideCardApi(retrofit: Retrofit): CardApi =
         retrofit.create(CardApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideUserApi(retrofit: Retrofit): UserApi =
+        retrofit.create(UserApi::class.java)
 
     /* Retrofit Object 생성 */
 
@@ -53,12 +59,6 @@ class NetworkModule {
 
         return okHttpClientBuilder.build()
     }
-
-//    @Provides
-//    @Singleton
-//    @LoggingInterceptor
-//    fun provideLoggingInterceptor(): HttpLoggingInterceptor =
-//        HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY }
 
     @Provides
     @Singleton
