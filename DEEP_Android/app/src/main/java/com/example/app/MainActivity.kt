@@ -7,12 +7,15 @@ import android.nfc.NdefRecord
 import android.nfc.NfcAdapter
 import android.nfc.Tag
 import android.nfc.tech.Ndef
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -37,23 +40,27 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.app.presentation.navigation.BottomNavItem
 import com.example.app.presentation.navigation.NavGraph
+import com.example.app.presentation.screen.start.StartScreen
 import com.example.app.ui.theme.Blue100
 import com.example.app.ui.theme.DEEP_AndroidTheme
 import com.example.app.ui.theme.DeepBlue
 import com.example.app.util.TAG
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.common.api.ApiException
 import java.io.IOException
 
 class MainActivity : ComponentActivity() {
 
     val viewModel : MainViewModel by viewModels()
 
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             DEEP_AndroidTheme {
-
-                MainScreenView(viewModel)
-
+                StartScreen(this)
+//                MainScreenView(viewModel)
             }
         }
 
@@ -129,6 +136,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.P)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreenView(mainViewModel: MainViewModel){

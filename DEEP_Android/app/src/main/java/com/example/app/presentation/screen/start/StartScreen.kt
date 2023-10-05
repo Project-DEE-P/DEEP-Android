@@ -1,5 +1,13 @@
 package com.example.app.presentation.screen.start
 
+import android.app.Activity
+import android.content.Intent
+import android.util.Log
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -33,14 +41,41 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.app.util.CLIENT_ID
 import com.example.app.util.deepFontFamily
 import com.example.deep_android.R
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.common.api.Scope
+import com.google.android.gms.common.api.internal.RegisterListenerMethod
+import com.google.android.gms.tasks.Task
+import java.lang.Exception
 
 @Composable
-fun StartScreen(navController: NavController) {
+fun StartScreen(
+    activity: Activity
+) {
 
-    val googleSignInClient: GoogleSignInClient by lazy { getGoogleClient() }
+    var account: GoogleSignInAccount
+    var authCode: String
 
+    val googleAuthLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        runCatching {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+            account = task.getResult(ApiException::class.java)
+//            authCode = account.serverAuthCode.toString()
+//            Log.d(TAG, "Google Oauth Success!! $authCode")
+        }.onSuccess {
+            Log.d(TAG, "Google Oauth Success!!")
+            Toast.makeText(activity, "로그인이 되었습니다", Toast.LENGTH_SHORT).show()
+        }.onFailure { e ->
+            Log.d(TAG, "Google Oauth Failed.." + e.stackTraceToString())
+            Toast.makeText(activity, "로그인에 실패했습니다", Toast.LENGTH_SHORT).show()
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -61,9 +96,12 @@ fun StartScreen(navController: NavController) {
                 .height(49.dp)
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
-            onClick = { /*TODO*/ },
             colors = ButtonDefaults.buttonColors(backgroundColor = Color.White),
             shape = RoundedCornerShape(16.dp),
+            onClick = {
+                val googleOauth = GoogleOauth(activity, googleAuthLauncher)
+                googleOauth.requestGoogleLogin()
+            },
         ) {
             Icon(
                 modifier = Modifier.size(20.dp),
@@ -73,7 +111,6 @@ fun StartScreen(navController: NavController) {
             )
             Spacer(modifier = Modifier.width(10.dp))
             Text(
-//                modifier = Modifier.padding(vertical = 14.dp),
                 text = "구글로 로그인하기",
                 fontFamily = deepFontFamily,
                 fontWeight = FontWeight.Medium,
@@ -84,9 +121,14 @@ fun StartScreen(navController: NavController) {
     }
 }
 
-@Preview(showSystemUi = true)
-@Composable
-fun StartScreenPreview() {
-    val navController = rememberNavController()
-    StartScreen(navController = navController)
-}
+const val TAG = "StartScreen"
+
+//@Preview(showSystemUi = true)
+//@Composable
+//fun StartScreenPreview() {
+//    val navController = rememberNavController()
+//
+////    StartScreen(
+////        navController = navController)
+//}
+

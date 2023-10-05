@@ -4,6 +4,7 @@ buildscript {
         google()
         mavenCentral()
         maven { url 'https://jitpack.io' }
+    }
 }
 plugins {
     id 'com.android.application' version '8.1.2' apply false
@@ -11,4 +12,3 @@ plugins {
     id 'org.jetbrains.kotlin.android' version '1.7.20' apply false
 
 }
-
