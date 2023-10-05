@@ -30,6 +30,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -45,17 +46,22 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.app.ui.theme.DeepBlue
 import com.example.app.util.deepFontFamily
 import com.example.app.util.shadow
 import com.example.deep_android.R
-import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
+import androidx.compose.runtime.*
+import com.example.domain.model.CardModel
 
 @Composable
 fun CardListScreen(
-    navController: NavController
+    navController: NavController,
+    viewModel : CardListViewModel = hiltViewModel()
 ){
+
+    val rememberedCardList by rememberUpdatedState(newValue = viewModel.rememberedCardList)
 
     Column(
         modifier = Modifier
@@ -70,7 +76,7 @@ fun CardListScreen(
         Spacer(
             modifier = Modifier.height(30.dp)
         )
-        CardList(listOf())
+        CardList(rememberedCardList)
     }
 }
 
@@ -91,7 +97,7 @@ fun PreviewCardListScreen(){
         Spacer(
             modifier = Modifier.height(30.dp)
         )
-        CardList(listOf())
+        CardList(null)
     }
 }
 
@@ -149,23 +155,34 @@ fun TitleCardList(userName : String){
 }
 
 @Composable
-fun CardList(cardList : List<CardData>){
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight(),
-        verticalArrangement = Arrangement.spacedBy(30.dp)
-    ){
-        itemsIndexed(
-            listOf(CardData("최희건","2023년 6월 13일"),CardData("최희건","2023년 6월 13일"),CardData("최희건","2023년 6월 13일"),CardData("최희건","2023년 6월 13일"),CardData("최희건","2023년 6월 13일"))
-        ){index: Int, item: CardData ->
-            CardListItem(data = item)
+fun CardList(cardList : List<CardModel>?){
+    if(cardList != null){
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight(),
+            verticalArrangement = Arrangement.spacedBy(30.dp)
+        ) {
+            itemsIndexed(
+                cardList
+            ) { index: Int, item: CardModel ->
+                CardListItem(data = item)
+            }
         }
+    }
+    else {
+        Text(
+            text = "저장된 명함이 없습니다",
+            color = Color.Black,
+            fontSize = 25.sp,
+            fontFamily = deepFontFamily,
+            fontWeight = FontWeight.Bold
+        )
     }
 }
 
 @Composable
-fun CardListItem(data : CardData){
+fun CardListItem(data : CardModel){
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -180,7 +197,7 @@ fun CardListItem(data : CardData){
                 verticalAlignment = Alignment.Bottom
             ) {
                 Text(
-                    text = "${data.name} 님의 명함",
+                    text = "${data.uid} 님의 명함",
                     color = Color.Black,
                     fontSize = 16.sp,
                     fontFamily = deepFontFamily,
@@ -190,7 +207,7 @@ fun CardListItem(data : CardData){
                 Spacer(modifier = Modifier.width(8.dp))
 
                 Text(
-                    text = data.date,
+                    text = data.createdDateTime,
                     color = Color.Gray,
                     fontSize = 12.sp,
                     fontFamily = deepFontFamily,

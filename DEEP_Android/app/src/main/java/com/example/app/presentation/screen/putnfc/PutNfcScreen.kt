@@ -70,7 +70,9 @@ import com.example.app.ui.theme.DeepBlue
 import com.example.app.util.TAG
 import com.example.app.util.deepFontFamily
 import com.example.app.util.shadow
+import com.example.data.network.repository.CardRepositoryImpl
 import com.example.deep_android.R
+import com.example.domain.repository.CardRepository
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
@@ -91,6 +93,8 @@ fun PutNfcScreen(navController: NavController, mainViewModel: MainViewModel, ale
     val pagerState = rememberPagerState()
 
     val cardList = listOf(CardData("PARAOOO","2023년 6월 13일"),CardData("SeokgyuYun","2023년 6월 13일"),CardData("yr0118kim","2023년 6월 13일"),CardData("snack655","2023년 6월 13일"),CardData("최희건","2023년 6월 13일"))
+
+//    mainViewModel.getList()
 
     LaunchedEffect(Unit) {
         mainViewModel.successEvent.collect {
@@ -175,7 +179,6 @@ fun PutNfcScreen(navController: NavController, mainViewModel: MainViewModel, ale
 @Composable
 fun PreviewCreateScreen(){
 
-    PutNfcScreen(navController = rememberNavController(), mainViewModel =MainViewModel() , alert = {})
 
 }
 
