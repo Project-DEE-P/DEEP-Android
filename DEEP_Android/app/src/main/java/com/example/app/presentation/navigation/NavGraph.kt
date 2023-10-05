@@ -11,6 +11,7 @@ import com.example.app.presentation.screen.card.CardScreen
 import com.example.app.presentation.screen.cardlist.CardListScreen
 import com.example.app.presentation.screen.create.CreateScreen
 import com.example.app.presentation.screen.profile.ProfileScreen
+import com.example.app.presentation.screen.putnfc.PutNfcScreen
 
 @RequiresApi(Build.VERSION_CODES.P)
 @Composable
@@ -30,10 +31,13 @@ fun NavGraph(
             CardScreen(navController = navController)
         }
         composable(route = Screen.Create.route){
-            CreateScreen(navController = navController, mainViewModel = mainViewModel, alert = alert)
+            CreateScreen(navController = navController)
         }
         composable(route = Screen.Profile.route){
             ProfileScreen(navController = navController)
+        }
+        composable(route = Screen.PutNfc.route){
+            PutNfcScreen(navController = navController, mainViewModel = mainViewModel, alert = alert)
         }
 
     }
