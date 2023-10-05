@@ -49,8 +49,10 @@ import com.example.app.util.TAG
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.common.api.ApiException
+import dagger.hilt.android.AndroidEntryPoint
 import java.io.IOException
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     val viewModel : MainViewModel by viewModels()
@@ -60,8 +62,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             DEEP_AndroidTheme {
-                StartScreen(this)
-//                MainScreenView(viewModel)
+//                StartScreen(this)
+                MainScreenView(viewModel)
             }
         }
 

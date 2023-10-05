@@ -2,6 +2,10 @@ package com.example.domain.model
 
 data class CardModel(
 
-    val id : Int
+    val createdDateTime : String,
+    val modifiedDateTime : String,
+    val id : Int,
+    val uid : String,
+    val imagePath : String
 
 )

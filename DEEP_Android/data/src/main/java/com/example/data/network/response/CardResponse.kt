@@ -2,6 +2,10 @@ package com.example.data.network.response
 
 data class CardResponse(
 
-    val id : Int
+    val createdDateTime : String,
+    val modifiedDateTime : String,
+    val id : Int,
+    val uid : String,
+    val imagePath : String
 
 )
