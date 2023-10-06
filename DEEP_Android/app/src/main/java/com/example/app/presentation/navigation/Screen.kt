@@ -3,6 +3,8 @@ package com.example.app.presentation.navigation
 import com.example.deep_android.R
 
 sealed class Screen(val route : String) {
+    object Start: Screen("start_screen")
+    object Login: Screen("login_screen")
     object Card : Screen("card_screen")
     object CardList : Screen("card_list_screen")
     object Create : Screen("create_screen")

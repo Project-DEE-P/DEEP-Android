@@ -41,6 +41,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.app.presentation.navigation.BottomNavItem
 import com.example.app.presentation.navigation.NavGraph
+import com.example.app.presentation.navigation.Screen
+import com.example.app.presentation.screen.login.LoginViewModel
 import com.example.app.presentation.screen.start.StartScreen
 import com.example.app.presentation.screen.start.StartViewModel
 import com.example.app.ui.theme.Blue100
@@ -62,10 +64,10 @@ class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             DEEP_AndroidTheme {
-                StartScreen(this, startViewModel)
-//                MainScreenView(viewModel)
+                MainScreenView(viewModel, startViewModel)
             }
         }
 
@@ -146,7 +148,7 @@ class MainActivity : ComponentActivity() {
 @RequiresApi(Build.VERSION_CODES.P)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreenView(mainViewModel: MainViewModel){
+fun MainScreenView(mainViewModel: MainViewModel, startViewModel: StartViewModel){
     val navController = rememberNavController()
     var alert: (@Composable () -> Unit) by remember { mutableStateOf({}) }
 
@@ -161,6 +163,7 @@ fun MainScreenView(mainViewModel: MainViewModel){
                 NavGraph(
                     navController = navController,
                     mainViewModel = mainViewModel,
+                    startViewModel = startViewModel,
                     alert = { alert = it }
                 )
             }

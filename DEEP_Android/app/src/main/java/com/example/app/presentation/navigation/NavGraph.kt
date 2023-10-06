@@ -10,20 +10,31 @@ import com.example.app.MainViewModel
 import com.example.app.presentation.screen.card.CardScreen
 import com.example.app.presentation.screen.cardlist.CardListScreen
 import com.example.app.presentation.screen.create.CreateScreen
+import com.example.app.presentation.screen.login.LoginScreen
+import com.example.app.presentation.screen.login.LoginViewModel
 import com.example.app.presentation.screen.profile.ProfileScreen
 import com.example.app.presentation.screen.putnfc.PutNfcScreen
+import com.example.app.presentation.screen.start.StartScreen
+import com.example.app.presentation.screen.start.StartViewModel
 
 @RequiresApi(Build.VERSION_CODES.P)
 @Composable
 fun NavGraph(
     navController : NavHostController,
     mainViewModel: MainViewModel,
+    startViewModel: StartViewModel,
     alert: (@Composable () -> Unit) -> Unit
 ){
     NavHost(
         navController = navController,
-        startDestination = Screen.CardList.route
+        startDestination = Screen.Start.route
     ){
+        composable(route = Screen.Start.route){
+            StartScreen(navController = navController, startViewModel)
+        }
+        composable(route = Screen.Login.route){
+            LoginScreen(navController = navController)
+        }
         composable(route = Screen.CardList.route){
             CardListScreen(navController = navController)
         }
