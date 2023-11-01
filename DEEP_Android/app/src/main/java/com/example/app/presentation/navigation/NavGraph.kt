@@ -15,6 +15,7 @@ import com.example.app.presentation.screen.login.LoginScreen
 import com.example.app.presentation.screen.login.LoginViewModel
 import com.example.app.presentation.screen.profile.ProfileScreen
 import com.example.app.presentation.screen.putnfc.PutNfcScreen
+import com.example.app.presentation.screen.signup.SignupScreen
 import com.example.app.presentation.screen.start.StartScreen
 import com.example.app.presentation.screen.start.StartViewModel
 
@@ -34,6 +35,9 @@ fun NavGraph(
         }
         composable(route = Screen.Login.route){
             LoginScreen(navController = navController)
+        }
+        composable(route = Screen.Signup.route){
+            SignupScreen(navController = navController)
         }
         composable(route = Screen.CardList.route){
             CardListScreen(navController = navController)

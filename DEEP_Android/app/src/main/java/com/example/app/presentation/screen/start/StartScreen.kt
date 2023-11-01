@@ -6,6 +6,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -113,6 +114,9 @@ fun StartScreen(
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
+                modifier = Modifier.clickable {
+                    navController.navigate(Screen.Signup.route)
+                },
                 text = "회원가입",
                 fontFamily = deepFontFamily,
                 fontWeight = FontWeight.Medium,
