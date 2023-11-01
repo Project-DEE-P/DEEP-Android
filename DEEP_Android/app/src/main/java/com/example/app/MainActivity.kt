@@ -45,9 +45,8 @@ import com.example.app.presentation.navigation.Screen
 import com.example.app.presentation.screen.login.LoginViewModel
 import com.example.app.presentation.screen.start.StartScreen
 import com.example.app.presentation.screen.start.StartViewModel
-import com.example.app.ui.theme.Blue100
+import com.example.app.ui.theme.Blue
 import com.example.app.ui.theme.DEEP_AndroidTheme
-import com.example.app.ui.theme.DeepBlue
 import com.example.app.util.TAG
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -59,7 +58,6 @@ import java.io.IOException
 class MainActivity : ComponentActivity() {
 
     val viewModel : MainViewModel by viewModels()
-    val startViewModel : StartViewModel by viewModels()
 
     @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,7 +65,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             DEEP_AndroidTheme {
-                MainScreenView(viewModel, startViewModel)
+                MainScreenView(viewModel)
             }
         }
 
@@ -148,7 +146,7 @@ class MainActivity : ComponentActivity() {
 @RequiresApi(Build.VERSION_CODES.P)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreenView(mainViewModel: MainViewModel, startViewModel: StartViewModel){
+fun MainScreenView(mainViewModel: MainViewModel){
     val navController = rememberNavController()
     var alert: (@Composable () -> Unit) by remember { mutableStateOf({}) }
 
@@ -163,7 +161,6 @@ fun MainScreenView(mainViewModel: MainViewModel, startViewModel: StartViewModel)
                 NavGraph(
                     navController = navController,
                     mainViewModel = mainViewModel,
-                    startViewModel = startViewModel,
                     alert = { alert = it }
                 )
             }
@@ -185,7 +182,7 @@ fun BottomNavigation(navController: NavController){
 
     androidx.compose.material.BottomNavigation(
         backgroundColor = Color.White,
-        contentColor = DeepBlue
+        contentColor = Blue.DeepBlue
     ){
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
@@ -203,11 +200,11 @@ fun BottomNavigation(navController: NavController){
                     )
                 },
                 label = {
-                    if(selected) Text( item.title, fontSize = 9.sp, color = DeepBlue)
-                    else Text( item.title, fontSize = 9.sp, color = Blue100)
+                    if(selected) Text( item.title, fontSize = 9.sp, color = Blue.DeepBlue)
+                    else Text( item.title, fontSize = 9.sp, color = Blue.Blue100)
                      },
-                selectedContentColor = DeepBlue,
-                unselectedContentColor = Blue100,
+                selectedContentColor = Blue.DeepBlue,
+                unselectedContentColor = Blue.Blue100,
                 selected = selected,
                 alwaysShowLabel = true,
                 onClick = {

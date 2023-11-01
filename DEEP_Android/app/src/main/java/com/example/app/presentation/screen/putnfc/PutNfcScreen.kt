@@ -65,8 +65,7 @@ import com.example.app.MainActivity
 import com.example.app.MainViewModel
 import com.example.app.presentation.screen.cardlist.CardData
 import com.example.app.presentation.screen.cardlist.DeepTopBar
-import com.example.app.presentation.screen.create.CreateScreen
-import com.example.app.ui.theme.DeepBlue
+import com.example.app.ui.theme.Blue
 import com.example.app.util.TAG
 import com.example.app.util.deepFontFamily
 import com.example.app.util.shadow
@@ -278,7 +277,7 @@ fun CreateButton(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight(),
-            colors = ButtonDefaults.buttonColors(containerColor = DeepBlue),
+            colors = ButtonDefaults.buttonColors(containerColor = Blue.DeepBlue),
             shape = RoundedCornerShape(16.dp),
             contentPadding = PaddingValues(vertical = 12.dp),
             enabled = isButtonEnabled
@@ -352,7 +351,7 @@ fun ConnectDialog(
                         .fillMaxWidth()
                         .height(30.dp)
                         .padding(horizontal = 40.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = DeepBlue),
+                    colors = ButtonDefaults.buttonColors(containerColor = Blue.DeepBlue),
                     shape = RoundedCornerShape(16.dp),
                     contentPadding = PaddingValues(vertical = 0.dp),
                 ) {

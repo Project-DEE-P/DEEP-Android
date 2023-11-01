@@ -57,7 +57,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import com.example.app.MainActivity
 import com.example.app.MainViewModel
-import com.example.app.ui.theme.DeepBlue
 import com.example.app.util.TAG
 import com.example.app.util.deepFontFamily
 import com.example.app.util.shadow
@@ -71,6 +70,7 @@ import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.window.Dialog
 import androidx.core.app.ActivityCompat
 import com.example.app.presentation.screen.cardlist.DeepTopBar
+import com.example.app.ui.theme.Blue
 
 @RequiresApi(Build.VERSION_CODES.P)
 @Composable
@@ -259,7 +259,7 @@ fun CreateButton(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight(),
-            colors = ButtonDefaults.buttonColors(containerColor = DeepBlue),
+            colors = ButtonDefaults.buttonColors(containerColor = Blue.DeepBlue),
             shape = RoundedCornerShape(16.dp),
             contentPadding = PaddingValues(vertical = 12.dp),
             enabled = isBitmapRatioOk
