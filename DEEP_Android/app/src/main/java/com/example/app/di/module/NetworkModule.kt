@@ -1,9 +1,9 @@
 package com.example.app.di.module
 
 import com.example.app.di.BASE_URL
-import com.example.app.di.OAUTH_BASE_URL
+import com.example.app.di.HiltApplication
 import com.example.data.network.api.CardApi
-import com.example.data.remote.api.UserApi
+import com.example.data.network.api.UserApi
 import com.ggd.qualifier.HeaderInterceptor
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -16,7 +16,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 //import okhttp3.logging.HttpLoggingInterceptor
 import java.util.concurrent.TimeUnit
-import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -87,7 +86,8 @@ class NetworkModule {
     fun provideHeaderInterceptor() = Interceptor { chain ->
         with(chain) {
             val newRequest = request().newBuilder()
-                .addHeader("Authorization","Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJhZG1pbiIsImlhdCI6MTY5NjUxNTY1OSwiZXhwIjoxNjk3MTIwNDU5LCJpc3MiOiJERUVQIiwic3ViIjoidG9rZW4ifQ.Bl7vjv_hPUpzsl0q5BUotgYR4MSHMF4InHOs2Y6JHsw")
+//                .addHeader("Authorization","Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJhZG1pbiIsImlhdCI6MTY5NjUxNTY1OSwiZXhwIjoxNjk3MTIwNDU5LCJpc3MiOiJERUVQIiwic3ViIjoidG9rZW4ifQ.Bl7vjv_hPUpzsl0q5BUotgYR4MSHMF4InHOs2Y6JHsw")
+                .addHeader("Authorization","Bearer " + HiltApplication.pref)
                 .build()
             proceed(newRequest)
        }

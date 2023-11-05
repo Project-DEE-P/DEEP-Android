@@ -1,9 +1,9 @@
 package com.example.data.mapper
 
-import com.example.data.remote.dto.user.GoogleOauthRequestDto
-import com.example.data.remote.dto.user.GoogleOauthResponseDto
-import com.example.data.remote.dto.user.LoginRequestDto
-import com.example.data.remote.dto.user.LoginResponseDto
+import com.example.data.network.request.GoogleOauthRequestDto
+import com.example.data.network.response.GoogleOauthResponseDto
+import com.example.data.network.request.LoginRequestDto
+import com.example.data.network.response.LoginResponseDto
 import com.example.domain.model.user.GoogleOauthRequestModel
 import com.example.domain.model.user.GoogleOauthResponseModel
 import com.example.domain.model.user.LoginRequestModel

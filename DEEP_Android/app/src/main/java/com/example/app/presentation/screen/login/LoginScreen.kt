@@ -27,6 +27,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.app.di.HiltApplication
 import com.example.app.presentation.navigation.Screen
 import com.example.app.ui.components.button.DeepButton
 import com.example.app.ui.components.textfield.DeepTextField
@@ -83,20 +84,18 @@ fun LoginScreen(
             titleColor = Color.White,
             buttonTitle = "로그인",
             onClick = {
-                navController.navigate(Screen.PutNfc.route)
-
-//                if (id.text.isNotEmpty() && password.text.isNotEmpty()) {
-//                    Log.d("LoginScreen", "LoginScreen: ${id.text}, ${password.text}")
-//                    viewModel.login(
-//                        LoginRequestModel(id.text, password.text)
-//                    )
-//                }
-//                if (id.text.isEmpty()) {
-//                    Toast.makeText(context, "아이디를 입력해주세요", Toast.LENGTH_SHORT).show()
-//                }
-//                if (password.text.isEmpty()) {
-//                    Toast.makeText(context, "비밀번호를 입력해주세요", Toast.LENGTH_SHORT).show()
-//                }
+                if (id.text.isNotEmpty() && password.text.isNotEmpty()) {
+                    Log.d("LoginScreen", "LoginScreen: ${id.text}, ${password.text}")
+                    viewModel.login(
+                        LoginRequestModel(id.text, password.text)
+                    )
+                }
+                if (id.text.isEmpty()) {
+                    Toast.makeText(context, "아이디를 입력해주세요", Toast.LENGTH_SHORT).show()
+                }
+                if (password.text.isEmpty()) {
+                    Toast.makeText(context, "비밀번호를 입력해주세요", Toast.LENGTH_SHORT).show()
+                }
             }
         )
         Spacer(modifier = Modifier.padding(bottom = 20.dp))

@@ -1,4 +1,4 @@
-package com.example.data.remote.dto.user
+package com.example.data.network.request
 
 data class LoginRequestDto(
     val userId: String,
