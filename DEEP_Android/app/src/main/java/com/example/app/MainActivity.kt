@@ -40,12 +40,14 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.app.presentation.navigation.BottomNavItem
+import com.example.app.presentation.navigation.BottomNavigation
 import com.example.app.presentation.navigation.NavGraph
+import com.example.app.presentation.navigation.Screen
+import com.example.app.presentation.screen.login.LoginViewModel
 import com.example.app.presentation.screen.start.StartScreen
 import com.example.app.presentation.screen.start.StartViewModel
-import com.example.app.ui.theme.Blue100
+import com.example.app.ui.theme.Blue
 import com.example.app.ui.theme.DEEP_AndroidTheme
-import com.example.app.ui.theme.DeepBlue
 import com.example.app.util.TAG
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -57,15 +59,14 @@ import java.io.IOException
 class MainActivity : ComponentActivity() {
 
     val viewModel : MainViewModel by viewModels()
-    val startViewModel : StartViewModel by viewModels()
 
     @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             DEEP_AndroidTheme {
-                StartScreen(this, startViewModel)
-//                MainScreenView(viewModel)
+                MainScreenView(viewModel)
             }
         }
 
@@ -150,9 +151,22 @@ fun MainScreenView(mainViewModel: MainViewModel){
     val navController = rememberNavController()
     var alert: (@Composable () -> Unit) by remember { mutableStateOf({}) }
 
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+
+    val onBottomNav = when (navBackStackEntry?.destination?.route) {
+        "put_nfc_screen" -> true
+        "card_list_screen" -> true
+        "profile_screen" -> true
+        else -> false
+    }
+
     Box {
         Scaffold(
-            bottomBar = { BottomNavigation(navController = navController)}
+            bottomBar = {
+                if (onBottomNav) {
+                    BottomNavigation(navController = navController)
+                }
+            }
         ) {
             Box(
                 modifier = Modifier
@@ -170,56 +184,3 @@ fun MainScreenView(mainViewModel: MainViewModel){
     
 
 }
-
-@Composable
-fun BottomNavigation(navController: NavController){
-
-    val items = listOf<BottomNavItem>(
-        BottomNavItem.PutNfc,
-        BottomNavItem.CardList,
-        BottomNavItem.Profile
-    )
-
-    androidx.compose.material.BottomNavigation(
-        backgroundColor = Color.White,
-        contentColor = DeepBlue
-    ){
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val currentRoute = navBackStackEntry?.destination?.route
-
-        items.forEach { item ->
-            val selected = currentRoute == item.route
-            BottomNavigationItem(
-                icon = {
-                    Icon(
-                        painter = painterResource(id = item.icon),
-                        contentDescription = item.title,
-                        modifier = Modifier
-                            .width(26.dp)
-                            .height(26.dp)
-                    )
-                },
-                label = {
-                    if(selected) Text( item.title, fontSize = 9.sp, color = DeepBlue)
-                    else Text( item.title, fontSize = 9.sp, color = Blue100)
-                     },
-                selectedContentColor = DeepBlue,
-                unselectedContentColor = Blue100,
-                selected = selected,
-                alwaysShowLabel = true,
-                onClick = {
-                    navController.navigate(item.route) {
-                        navController.graph.startDestinationRoute?.let {
-                            popUpTo(it) { saveState = true }
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                }
-            )
-        }
-
-    }
-
-}
-

@@ -1,4 +1,4 @@
-package com.example.app.presentation.screen.start
+package com.example.app.presentation.screen.start.oauth
 
 import android.app.Activity
 import android.content.Context
@@ -15,7 +15,7 @@ import com.google.android.gms.tasks.Task
 class GoogleOauthLogin: ActivityResultContract<Int, Task<GoogleSignInAccount>?>() {
     override fun createIntent(context: Context, input: Int): Intent {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//            .requestIdToken(CLIENT_ID)
+            .requestIdToken(CLIENT_ID)
             .requestEmail()
             .build()
 

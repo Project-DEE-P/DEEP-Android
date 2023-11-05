@@ -1,4 +1,4 @@
-package com.example.data.remote.dto
+package com.example.data.network.response
 
 data class Response<T>(
     val status: Int,

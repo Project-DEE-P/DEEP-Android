@@ -48,11 +48,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.app.ui.theme.DeepBlue
 import com.example.app.util.deepFontFamily
 import com.example.app.util.shadow
 import com.example.deep_android.R
 import androidx.compose.runtime.*
+import com.example.app.ui.theme.Blue
 import com.example.domain.model.CardModel
 
 @Composable
@@ -137,7 +137,7 @@ fun TitleCardList(userName : String){
         val annoatedTitleString = buildAnnotatedString {
             append("${userName} 님의 ")
 
-            withStyle(style = SpanStyle(color = DeepBlue)) {
+            withStyle(style = SpanStyle(color = Blue.DeepBlue)) {
                 append("DEE:P")
             }
 
