@@ -25,9 +25,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.app.presentation.navigation.Screen
 import com.example.app.presentation.screen.start.oauth.GoogleOauth
 import com.example.app.ui.components.button.DeepButton
+import com.example.app.ui.components.button.DeepIconButton
 import com.example.app.ui.theme.Blue
 import com.example.app.ui.theme.Gray
 import com.example.app.util.deepFontFamily
@@ -86,19 +88,20 @@ fun StartScreen(
             titleColor = Color.White,
             buttonTitle = "로그인",
             onClick = {
+                Log.d(TAG, "I clicked login button")
                 navController.navigate(Screen.Login.route)
             }
         )
         Spacer(modifier = Modifier.height(16.dp))
-        DeepButton(
+        DeepIconButton(
             backgroundColor = Color.White,
             titleColor = Gray.Gray900,
             buttonTitle = "구글로 로그인",
             borderLine = true,
+            iconResource = R.drawable.ic_google,
             onClick = {
                 val googleOauth = GoogleOauth(context, googleAuthLauncher)
                 googleOauth.requestGoogleLogin()
-//                  navController.navigate(Screen.Login.route)
             }
         )
         Spacer(modifier = Modifier.height(16.dp))
@@ -115,6 +118,7 @@ fun StartScreen(
             Spacer(modifier = Modifier.width(8.dp))
             Text(
                 modifier = Modifier.clickable {
+                    Log.d(TAG, "I clicked signup button")
                     navController.navigate(Screen.Signup.route)
                 },
                 text = "회원가입",
@@ -130,62 +134,9 @@ fun StartScreen(
 
 const val TAG = "StartScreen"
 
-@Composable
-fun StartScreenForPreview() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(
-                color = Color.White
-            ),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Spacer(modifier = Modifier.weight(1f))
-        Image(
-            painter = painterResource(id = R.drawable.image_deep),
-            contentDescription = null,
-        )
-        Spacer(modifier = Modifier.weight(1f))
-        DeepButton(
-            backgroundColor = Blue.DeepBlue,
-            titleColor = Color.White,
-            buttonTitle = "로그인",
-            onClick = { /*TODO*/ }
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        DeepButton(
-            backgroundColor = Color.White,
-            titleColor = Gray.Gray900,
-            buttonTitle = "구글로 로그인",
-            borderLine = true,
-            onClick = { /*TODO*/ }
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = "DEEP 유저가 아니라면?",
-                fontFamily = deepFontFamily,
-                fontWeight = FontWeight.Normal,
-                fontSize = 14.sp,
-                color = Gray.Gray300
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(
-                text = "회원가입",
-                fontFamily = deepFontFamily,
-                fontWeight = FontWeight.Medium,
-                fontSize = 16.sp,
-                color = Gray.Gray800
-            )
-        }
-        Spacer(modifier = Modifier.height(16.dp))
-    }
-}
-
 @Preview
 @Composable
 fun StartScreenPreview() {
-    StartScreenForPreview()
+    val navController = rememberNavController()
+    StartScreen(navController = navController)
 }

@@ -3,6 +3,7 @@ package com.example.data.repository
 import com.example.data.mapper.toDto
 import com.example.data.mapper.toModel
 import com.example.data.remote.api.UserApi
+import com.example.domain.model.Response
 import com.example.domain.model.user.GoogleOauthRequestModel
 import com.example.domain.model.user.GoogleOauthResponseModel
 import com.example.domain.model.user.LoginRequestModel
@@ -19,6 +20,6 @@ class UserRepositoryImpl @Inject constructor(
         userApi.googleOauthLogin(googleOauthRequestModel.toDto()).data.toModel()
 
     override suspend fun login(loginRequestModel: LoginRequestModel): LoginResponseModel =
-        userApi.login(loginRequestModel.toDto()).data.toModel()
+        userApi.login(loginRequestModel).data
 
 }

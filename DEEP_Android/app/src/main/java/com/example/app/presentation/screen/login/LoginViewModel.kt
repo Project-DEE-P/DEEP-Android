@@ -10,7 +10,9 @@ import com.example.domain.model.user.LoginRequestModel
 import com.example.domain.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,18 +22,18 @@ class LoginViewModel @Inject constructor(
     private val userRepository: UserRepository
 ): ViewModel() {
 
-    private var _loginState = MutableLiveData<Boolean>()
-    val loginState: LiveData<Boolean> = _loginState
+    private var _loginState = MutableStateFlow(LoginState())
+    val loginState: StateFlow<LoginState> = _loginState
 
     fun login(loginRequestModel: LoginRequestModel) = viewModelScope.launch {
         kotlin.runCatching {
             userRepository.login(loginRequestModel)
         }.onSuccess {
             Log.d(TAG, "login: success!! $it")
-            _loginState.value = true
+            _loginState.emit(LoginState(isSuccess = true))
         }.onFailure { e ->
             Log.d(TAG, "login: failed.. $e")
-            _loginState.value = false
+            _loginState.emit(LoginState(error = "$e"))
         }
     }
 

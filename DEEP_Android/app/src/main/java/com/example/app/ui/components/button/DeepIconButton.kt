@@ -2,6 +2,7 @@ package com.example.app.ui.components.button
 
 import android.content.Intent.ShortcutIconResource
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -48,8 +49,10 @@ fun DeepIconButton(
         Icon(
             modifier = Modifier.size(20.dp),
             painter = painterResource(id = iconResource),
-            contentDescription = null
+            contentDescription = null,
+            tint = Color.Unspecified
         )
+        Spacer(modifier = Modifier.width(14.dp))
         Text(
             text = buttonTitle,
             fontFamily = deepFontFamily,

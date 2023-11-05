@@ -1,6 +1,7 @@
 package com.example.app.presentation.screen.putnfc
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -32,6 +33,8 @@ import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -60,9 +63,9 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.core.app.ActivityCompat
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.app.MainActivity
 import com.example.app.MainViewModel
+import com.example.app.presentation.navigation.BottomNavigation
 import com.example.app.presentation.screen.cardlist.CardData
 import com.example.app.presentation.screen.cardlist.DeepTopBar
 import com.example.app.ui.theme.Blue
@@ -77,7 +80,8 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
 
-@OptIn(ExperimentalPagerApi::class)
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@OptIn(ExperimentalPagerApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun PutNfcScreen(navController: NavController, mainViewModel: MainViewModel, alert: (@Composable () -> Unit) -> Unit){
     val text by rememberUpdatedState(newValue = mainViewModel.text)
@@ -118,6 +122,7 @@ fun PutNfcScreen(navController: NavController, mainViewModel: MainViewModel, ale
                 }
             }
         }
+
 //        if(isSuccessed != null){
 //            if (isSuccessed!!) {
 //                isShowAlert = true
@@ -171,8 +176,8 @@ fun PutNfcScreen(navController: NavController, mainViewModel: MainViewModel, ale
             isButtonEnabled
         )
     }
-
 }
+
 
 @Preview
 @Composable
