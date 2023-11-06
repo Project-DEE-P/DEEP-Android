@@ -12,6 +12,7 @@ import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ProvidableCompositionLocal
+import androidx.compose.runtime.key
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusManager
@@ -22,10 +23,12 @@ import androidx.compose.ui.unit.dp
 import com.example.app.ui.theme.Blue
 import com.example.app.ui.theme.Gray
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun DeepTextField(
     modifier: Modifier,
@@ -34,6 +37,7 @@ fun DeepTextField(
     hint: String,
     localFocusManager: ProvidableCompositionLocal<FocusManager>,
     isLast: Boolean = false,
+    keyBoardType: KeyboardType,
     onValueChange: (TextFieldValue) -> Unit,
 ) {
     val focusManager = localFocusManager.current
@@ -52,8 +56,10 @@ fun DeepTextField(
         ) },
         singleLine = true,
         keyboardOptions = KeyboardOptions(
-            imeAction = if (isLast) ImeAction.Done else ImeAction.Next
+            imeAction = if (isLast) ImeAction.Done else ImeAction.Next,
+            keyboardType = keyBoardType
         ),
+        visualTransformation = if (keyBoardType == KeyboardType.Password) PasswordVisualTransformation() else VisualTransformation.None,
         keyboardActions = KeyboardActions(
             onDone = { if (isLast) { focusManager.clearFocus() } },
             onNext = { if (!isLast) { focusManager.moveFocus(FocusDirection.Down) } }

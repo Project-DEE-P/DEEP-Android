@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -69,6 +70,7 @@ fun LoginScreen(
             label = "아이디",
             hint = "아이디를 입력해주세요",
             localFocusManager = LocalFocusManager,
+            keyBoardType = KeyboardType.Text,
             onValueChange = { newText -> id = newText }
         )
         DeepTextField(
@@ -78,6 +80,7 @@ fun LoginScreen(
             hint = "비밀번호를 입력해주세요",
             localFocusManager = LocalFocusManager,
             isLast = true,
+            keyBoardType = KeyboardType.Password,
             onValueChange = { newText -> password = newText }
         )
         Spacer(modifier = Modifier.weight(1f))

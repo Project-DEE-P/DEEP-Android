@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -69,6 +70,7 @@ fun SignupScreen(
             label = "이름",
             hint = "이름을 입력해주세요",
             localFocusManager = LocalFocusManager,
+            keyBoardType = KeyboardType.Text,
             onValueChange = { newText -> name = newText }
         )
         DeepTextField(
@@ -77,6 +79,7 @@ fun SignupScreen(
             label = "아이디",
             hint = "아이디를 입력해주세요",
             localFocusManager = LocalFocusManager,
+            keyBoardType = KeyboardType.Text,
             onValueChange = { newText -> id = newText }
         )
         DeepTextField(
@@ -85,6 +88,7 @@ fun SignupScreen(
             label = "비밀번호",
             hint = "비밀번호를 입력해주세요",
             localFocusManager = LocalFocusManager,
+            keyBoardType = KeyboardType.Password,
             onValueChange = { newText -> password = newText }
         )
         DeepTextField(
@@ -93,6 +97,7 @@ fun SignupScreen(
             label = "비밀번호 확인",
             hint = "비밀번호를 확인해주세요",
             localFocusManager = LocalFocusManager,
+            keyBoardType = KeyboardType.Password,
             onValueChange = { newText -> passwordCheck = newText }
         )
         DeepTextField(
@@ -102,6 +107,7 @@ fun SignupScreen(
             hint = "이메일을 입력해주세요",
             localFocusManager = LocalFocusManager,
             isLast = true,
+            keyBoardType = KeyboardType.Email,
             onValueChange = { newText -> email = newText }
         )
         Spacer(modifier = Modifier.weight(1f))
@@ -132,7 +138,7 @@ fun SignupScreen(
     LaunchedEffect(true) {
         viewModel.signupState.collect {
             if (it.isSuccess) {
-                Toast.makeText(context, "회원가입한 아이디와 비밀번호로 로그인해주세요", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "회원가입한 아이디와\n비밀번호로 로그인해주세요", Toast.LENGTH_SHORT).show()
                 navController.navigate(Screen.Login.route)
             }
             if (it.error.isNotEmpty()) {

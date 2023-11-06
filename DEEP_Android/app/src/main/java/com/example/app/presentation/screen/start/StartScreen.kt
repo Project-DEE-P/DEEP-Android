@@ -91,17 +91,17 @@ fun StartScreen(
             }
         )
         Spacer(modifier = Modifier.height(16.dp))
-        DeepIconButton(
-            backgroundColor = Color.White,
-            titleColor = Gray.Gray900,
-            buttonTitle = "구글로 로그인",
-            borderLine = true,
-            iconResource = R.drawable.ic_google,
-            onClick = {
-                startForResult.launch(1)
-            }
-        )
-        Spacer(modifier = Modifier.height(16.dp))
+//        DeepIconButton(
+//            backgroundColor = Color.White,
+//            titleColor = Gray.Gray900,
+//            buttonTitle = "구글로 로그인",
+//            borderLine = true,
+//            iconResource = R.drawable.ic_google,
+//            onClick = {
+//                startForResult.launch(1)
+//            }
+//        )
+//        Spacer(modifier = Modifier.height(16.dp))
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
