@@ -53,7 +53,6 @@ import com.example.app.presentation.screen.start.StartScreen
 import com.example.app.presentation.screen.start.StartViewModel
 import com.example.app.ui.theme.Blue
 import com.example.app.ui.theme.DEEP_AndroidTheme
-import com.example.app.ui.theme.DeepBlue
 import com.example.app.util.TAG
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount

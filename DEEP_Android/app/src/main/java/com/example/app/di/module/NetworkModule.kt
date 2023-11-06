@@ -5,7 +5,6 @@ import com.example.app.di.BASE_URL
 import com.example.app.di.HiltApplication
 import com.example.data.network.api.CardApi
 import com.example.data.network.api.ClovaOcrApi
-import com.example.data.remote.api.UserApi
 import com.ggd.qualifier.BasicRetrofit
 import com.ggd.qualifier.ClovaRetrofit
 import com.example.data.network.api.UserApi

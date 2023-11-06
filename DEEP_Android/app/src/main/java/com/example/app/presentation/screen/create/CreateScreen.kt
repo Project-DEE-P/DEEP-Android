@@ -60,7 +60,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import com.example.app.MainActivity
 import com.example.app.MainViewModel
-import com.example.app.ui.theme.DeepBlue
 import com.example.app.util.TAG
 import com.example.app.util.deepFontFamily
 import com.example.app.util.shadow
@@ -77,6 +76,7 @@ import androidx.core.app.ActivityCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.app.presentation.screen.cardlist.DeepTopBar
 import com.example.app.ui.theme.Blue
+import com.example.app.ui.theme.Blue.DeepBlue
 import com.example.data.network.request.Message
 import com.example.domain.model.ClovaOcrDto
 import com.example.domain.model.ImageModel
