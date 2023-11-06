@@ -1,6 +1,7 @@
 package com.example.app
 
 import android.content.Intent
+import android.graphics.Bitmap
 import android.nfc.NfcAdapter
 import android.util.Log
 import androidx.compose.runtime.getValue
@@ -41,6 +42,8 @@ class MainViewModel @Inject constructor(
     var nfcAdapter : NfcAdapter? = null
 
     var intent : Intent? = null
+
+    var bitmap : Bitmap? by mutableStateOf(null)
 
 //    fun getCardList() = viewModelScope.launch(Dispatchers.IO) {
 //        kotlin.runCatching {

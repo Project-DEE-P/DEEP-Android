@@ -31,7 +31,7 @@ fun NavGraph(
             CardScreen(navController = navController)
         }
         composable(route = Screen.Create.route){
-            CreateScreen(navController = navController)
+            CreateScreen(navController = navController, mainViewModel = mainViewModel)
         }
         composable(route = Screen.Profile.route){
             ProfileScreen(navController = navController)
