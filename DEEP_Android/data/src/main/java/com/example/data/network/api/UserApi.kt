@@ -24,5 +24,5 @@ interface UserApi {
 //    suspend fun signup(
 //        @Body loginRequestModel: LoginRequestModel
 //    ): Response<LoginResponseModel>
-    
+
 }
