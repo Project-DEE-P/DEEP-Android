@@ -1,30 +1,28 @@
 package com.example.app.presentation.navigation
 
+import android.app.Activity
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.app.MainScreenView
 import com.example.app.MainViewModel
 import com.example.app.presentation.screen.card.CardScreen
 import com.example.app.presentation.screen.cardlist.CardListScreen
 import com.example.app.presentation.screen.create.CreateScreen
-import com.example.app.presentation.screen.login.LoginScreen
-import com.example.app.presentation.screen.login.LoginViewModel
+import com.example.app.presentation.screen.login.screen.LoginScreen
 import com.example.app.presentation.screen.profile.ProfileScreen
 import com.example.app.presentation.screen.putnfc.PutNfcScreen
-import com.example.app.presentation.screen.signup.SignupScreen
+import com.example.app.presentation.screen.signup.screen.SignupScreen
 import com.example.app.presentation.screen.start.StartScreen
-import com.example.app.presentation.screen.start.StartViewModel
 
 @RequiresApi(Build.VERSION_CODES.P)
 @Composable
 fun NavGraph(
     navController : NavHostController,
     mainViewModel: MainViewModel,
+    activity: Activity,
     alert: (@Composable () -> Unit) -> Unit
 ){
     NavHost(
@@ -32,7 +30,7 @@ fun NavGraph(
         startDestination = Screen.Start.route
     ){
         composable(route = Screen.Start.route) {
-            StartScreen(navController = navController)
+            StartScreen(navController = navController, activity = activity)
         }
         composable(route = Screen.Login.route){
             LoginScreen(navController = navController)

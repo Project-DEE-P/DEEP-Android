@@ -2,4 +2,9 @@
 <resources>
 
     <style name="Theme.DEEP_Android" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <style name="Theme.SplashScreen" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:windowBackground">@drawable/splash_background</item>
+    </style>
 </resources>

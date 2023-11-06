@@ -13,7 +13,6 @@ import android.nfc.tech.Ndef
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResult
@@ -22,36 +21,20 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.Icon
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.app.presentation.navigation.BottomNavItem
 import com.example.app.presentation.navigation.BottomNavigation
 import com.example.app.presentation.navigation.NavGraph
-import com.example.app.presentation.navigation.Screen
-import com.example.app.presentation.screen.login.LoginViewModel
-import com.example.app.presentation.screen.start.StartScreen
-import com.example.app.presentation.screen.start.StartViewModel
-import com.example.app.ui.theme.Blue
 import com.example.app.ui.theme.DEEP_AndroidTheme
 import com.example.app.util.TAG
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -64,7 +47,7 @@ import java.io.IOException
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    val viewModel : MainViewModel by viewModels()
+    private val viewModel : MainViewModel by viewModels()
     val startViewModel : StartViewModel by viewModels()
 
     lateinit var documentScanner: DocumentScanner
@@ -109,7 +92,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             DEEP_AndroidTheme {
-                MainScreenView(viewModel)
+                MainScreenView(viewModel, this)
             }
         }
 
@@ -190,7 +173,10 @@ class MainActivity : ComponentActivity() {
 @RequiresApi(Build.VERSION_CODES.P)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreenView(mainViewModel: MainViewModel){
+fun MainScreenView(
+    mainViewModel: MainViewModel,
+    activity: MainActivity
+){
     val navController = rememberNavController()
     var alert: (@Composable () -> Unit) by remember { mutableStateOf({}) }
 
@@ -218,6 +204,7 @@ fun MainScreenView(mainViewModel: MainViewModel){
                 NavGraph(
                     navController = navController,
                     mainViewModel = mainViewModel,
+                    activity = activity,
                     alert = { alert = it }
                 )
             }

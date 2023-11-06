@@ -1,4 +1,4 @@
-package com.example.app.presentation.screen.login
+package com.example.app.presentation.screen.login.screen
 
 import android.util.Log
 import android.widget.Toast
@@ -18,17 +18,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.ViewModelStoreOwner
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.app.di.HiltApplication
 import com.example.app.presentation.navigation.Screen
+import com.example.app.presentation.screen.login.viewmodel.LoginViewModel
 import com.example.app.ui.components.button.DeepButton
 import com.example.app.ui.components.textfield.DeepTextField
 import com.example.app.ui.icon.BackArrow
@@ -47,8 +48,6 @@ fun LoginScreen(
     var id by remember { mutableStateOf(TextFieldValue("")) }
     var password by remember { mutableStateOf(TextFieldValue("")) }
 
-    val loginState by viewModel.loginState.collectAsState()
-
     Column(
         modifier = Modifier
             .background(
@@ -58,7 +57,7 @@ fun LoginScreen(
     ) {
         BackArrow(navController = navController)
         Text(
-            modifier = Modifier.padding(start = 24.dp, top = 25.dp),
+            modifier = Modifier.padding(start = 24.dp, top = 51.dp),
             text = "로그인",
             fontFamily = deepFontFamily,
             fontWeight = FontWeight.Bold,
@@ -66,15 +65,22 @@ fun LoginScreen(
             color = Gray.Gray900
         )
         DeepTextField(
-            modifier = Modifier.padding(top = 60.dp),
+            modifier = Modifier.padding(top = 50.dp),
             value = id,
             label = "아이디",
+            hint = "아이디를 입력해주세요",
+            localFocusManager = LocalFocusManager,
+            keyBoardType = KeyboardType.Text,
             onValueChange = { newText -> id = newText }
         )
         DeepTextField(
             modifier = Modifier.padding(top = 30.dp),
             value = password,
             label = "비밀번호",
+            hint = "비밀번호를 입력해주세요",
+            localFocusManager = LocalFocusManager,
+            isLast = true,
+            keyBoardType = KeyboardType.Password,
             onValueChange = { newText -> password = newText }
         )
         Spacer(modifier = Modifier.weight(1f))
@@ -102,12 +108,14 @@ fun LoginScreen(
     }
 
     /** Collect */
-    LaunchedEffect(Unit) {
-        if (loginState.isSuccess) {
-            navController.navigate(Screen.PutNfc.route)
-        }
-        if (loginState.error.isNotEmpty()) {
-            Toast.makeText(context, "아이디나 비밀번호를 확인해주세요", Toast.LENGTH_SHORT).show()
+    LaunchedEffect(true) {
+        viewModel.loginState.collect {
+            if (it.isSuccess) {
+                navController.navigate(Screen.PutNfc.route)
+            }
+            if (it.error.isNotEmpty()) {
+                Toast.makeText(context, "아이디나 비밀번호를 확인해주세요", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }
