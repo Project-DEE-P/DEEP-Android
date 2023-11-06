@@ -1,8 +1,10 @@
 package com.example.app.presentation.screen.start
 
+import android.app.Activity
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -26,8 +28,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.app.MainActivity
 import com.example.app.presentation.navigation.Screen
+import com.example.app.presentation.screen.start.oauth.GoogleApiContract
 import com.example.app.presentation.screen.start.oauth.GoogleOauth
+import com.example.app.presentation.screen.start.oauth.GoogleOauth2
 import com.example.app.ui.components.button.DeepButton
 import com.example.app.ui.components.button.DeepIconButton
 import com.example.app.ui.theme.Blue
@@ -35,37 +40,30 @@ import com.example.app.ui.theme.Gray
 import com.example.app.util.deepFontFamily
 import com.example.deep_android.R
 import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.Task
 
 
 @Composable
 fun StartScreen(
     navController: NavController,
+    activity: Activity
 //    viewModel: StartViewModel
 ) {
     val context = LocalContext.current
 
-    val googleAuthLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        runCatching {
-            val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
-            val account = task.getResult(ApiException::class.java)
-//            viewModel.id.value = account.id
-//            viewModel.email.value = account.email
-        }.onSuccess {
-//            viewModel.googleOauthLogin(
-//                GoogleOauthRequestModel(
-//                    viewModel.id.value.toString(),
-//                    viewModel.email.value.toString()
-//                )
-//            )
-            Log.d(TAG, "Google Oauth Success!!")
-            Toast.makeText(context, "로그인 되었습니다", Toast.LENGTH_SHORT).show()
-            navController.navigate(Screen.PutNfc.route)
-        }.onFailure { e ->
-            Log.e(TAG, "Google Oauth Failed.." + e.stackTraceToString())
-            Toast.makeText(context, "로그인에 실패했습니다", Toast.LENGTH_SHORT).show()
+    val googleOauth = GoogleOauth2(activity)
+
+    val startForResult = rememberLauncherForActivityResult(GoogleApiContract()) { task ->
+        try {
+            val gsa = task?.getResult(ApiException::class.java)
+            if (gsa != null) {
+                // TODO : 성공시 처리 로직
+                Log.d("SUCCESS", gsa.idToken!!)
+            }
+        } catch (e: ApiException) {
+            e.printStackTrace()
         }
     }
 
@@ -100,8 +98,7 @@ fun StartScreen(
             borderLine = true,
             iconResource = R.drawable.ic_google,
             onClick = {
-                val googleOauth = GoogleOauth(context, googleAuthLauncher)
-                googleOauth.requestGoogleLogin()
+                startForResult.launch(1)
             }
         )
         Spacer(modifier = Modifier.height(16.dp))
@@ -138,5 +135,6 @@ const val TAG = "StartScreen"
 @Composable
 fun StartScreenPreview() {
     val navController = rememberNavController()
-    StartScreen(navController = navController)
+//    StartScreen(navController = navController)
 }
+

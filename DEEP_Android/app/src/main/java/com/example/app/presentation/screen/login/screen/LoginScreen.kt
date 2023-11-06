@@ -18,6 +18,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
@@ -66,12 +67,17 @@ fun LoginScreen(
             modifier = Modifier.padding(top = 60.dp),
             value = id,
             label = "아이디",
+            hint = "아이디를 입력해주세요",
+            localFocusManager = LocalFocusManager,
             onValueChange = { newText -> id = newText }
         )
         DeepTextField(
             modifier = Modifier.padding(top = 30.dp),
             value = password,
             label = "비밀번호",
+            hint = "비밀번호를 입력해주세요",
+            localFocusManager = LocalFocusManager,
+            isLast = true,
             onValueChange = { newText -> password = newText }
         )
         Spacer(modifier = Modifier.weight(1f))

@@ -1,5 +1,6 @@
 package com.example.app.presentation.navigation
 
+import android.app.Activity
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
@@ -21,6 +22,7 @@ import com.example.app.presentation.screen.start.StartScreen
 fun NavGraph(
     navController : NavHostController,
     mainViewModel: MainViewModel,
+    activity: Activity,
     alert: (@Composable () -> Unit) -> Unit
 ){
     NavHost(
@@ -28,7 +30,7 @@ fun NavGraph(
         startDestination = Screen.Start.route
     ){
         composable(route = Screen.Start.route) {
-            StartScreen(navController = navController)
+            StartScreen(navController = navController, activity = activity)
         }
         composable(route = Screen.Login.route){
             LoginScreen(navController = navController)

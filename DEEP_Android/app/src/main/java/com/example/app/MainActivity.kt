@@ -37,7 +37,7 @@ import java.io.IOException
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    val viewModel : MainViewModel by viewModels()
+    private val viewModel : MainViewModel by viewModels()
 
     @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,7 +45,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             DEEP_AndroidTheme {
-                MainScreenView(viewModel)
+                MainScreenView(viewModel, this)
             }
         }
 
@@ -126,7 +126,10 @@ class MainActivity : ComponentActivity() {
 @RequiresApi(Build.VERSION_CODES.P)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreenView(mainViewModel: MainViewModel){
+fun MainScreenView(
+    mainViewModel: MainViewModel,
+    activity: MainActivity
+){
     val navController = rememberNavController()
     var alert: (@Composable () -> Unit) by remember { mutableStateOf({}) }
 
@@ -154,6 +157,7 @@ fun MainScreenView(mainViewModel: MainViewModel){
                 NavGraph(
                     navController = navController,
                     mainViewModel = mainViewModel,
+                    activity = activity,
                     alert = { alert = it }
                 )
             }

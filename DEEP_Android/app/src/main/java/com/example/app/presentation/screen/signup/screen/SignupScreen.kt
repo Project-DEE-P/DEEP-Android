@@ -16,6 +16,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
@@ -66,30 +67,41 @@ fun SignupScreen(
             modifier = Modifier.padding(top = 60.dp),
             value = name,
             label = "이름",
+            hint = "이름을 입력해주세요",
+            localFocusManager = LocalFocusManager,
             onValueChange = { newText -> name = newText }
         )
         DeepTextField(
             modifier = Modifier.padding(top = 30.dp),
             value = id,
             label = "아이디",
+            hint = "아이디를 입력해주세요",
+            localFocusManager = LocalFocusManager,
             onValueChange = { newText -> id = newText }
         )
         DeepTextField(
             modifier = Modifier.padding(top = 30.dp),
             value = password,
             label = "비밀번호",
+            hint = "비밀번호를 입력해주세요",
+            localFocusManager = LocalFocusManager,
             onValueChange = { newText -> password = newText }
         )
         DeepTextField(
             modifier = Modifier.padding(top = 30.dp),
             value = passwordCheck,
             label = "비밀번호 확인",
+            hint = "비밀번호를 확인해주세요",
+            localFocusManager = LocalFocusManager,
             onValueChange = { newText -> passwordCheck = newText }
         )
         DeepTextField(
             modifier = Modifier.padding(top = 30.dp),
             value = email,
             label = "이메일",
+            hint = "이메일을 입력해주세요",
+            localFocusManager = LocalFocusManager,
+            isLast = true,
             onValueChange = { newText -> email = newText }
         )
         Spacer(modifier = Modifier.weight(1f))
