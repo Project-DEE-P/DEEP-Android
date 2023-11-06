@@ -56,7 +56,7 @@ fun SignupScreen(
     ) {
         BackArrow(navController = navController)
         Text(
-            modifier = Modifier.padding(start = 24.dp, top = 25.dp),
+            modifier = Modifier.padding(start = 24.dp, top = 51.dp),
             text = "회원가입",
             fontFamily = deepFontFamily,
             fontWeight = FontWeight.Bold,
@@ -64,7 +64,7 @@ fun SignupScreen(
             color = Gray.Gray900
         )
         DeepTextField(
-            modifier = Modifier.padding(top = 60.dp),
+            modifier = Modifier.padding(top = 50.dp),
             value = name,
             label = "이름",
             hint = "이름을 입력해주세요",

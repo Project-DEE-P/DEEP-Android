@@ -56,7 +56,7 @@ fun LoginScreen(
     ) {
         BackArrow(navController = navController)
         Text(
-            modifier = Modifier.padding(start = 24.dp, top = 25.dp),
+            modifier = Modifier.padding(start = 24.dp, top = 51.dp),
             text = "로그인",
             fontFamily = deepFontFamily,
             fontWeight = FontWeight.Bold,
@@ -64,7 +64,7 @@ fun LoginScreen(
             color = Gray.Gray900
         )
         DeepTextField(
-            modifier = Modifier.padding(top = 60.dp),
+            modifier = Modifier.padding(top = 50.dp),
             value = id,
             label = "아이디",
             hint = "아이디를 입력해주세요",
