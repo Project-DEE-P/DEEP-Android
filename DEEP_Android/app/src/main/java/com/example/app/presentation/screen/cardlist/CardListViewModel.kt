@@ -26,6 +26,7 @@ class CardListViewModel @Inject constructor(
             cardRepository.getRememberedCardList()
         }.onSuccess {
             rememberedCardList = it
+            Log.d(TAG,"getRememberedCardList - $it ")
         }.onFailure {
             rememberedCardList = null
             Log.d(TAG, "getRememberedCardList:error - $it ")

@@ -9,3 +9,20 @@ annotation class BasicRetrofit
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class HeaderInterceptor
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class OkhttpClient
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class OkhttpNoHeaderClient
+
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class ClovaRetrofit
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class LoggingInterceptor
