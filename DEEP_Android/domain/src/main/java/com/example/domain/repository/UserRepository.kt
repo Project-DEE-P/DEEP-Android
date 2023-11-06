@@ -5,6 +5,8 @@ import com.example.domain.model.user.GoogleOauthResponseModel
 import com.example.domain.model.user.LoginRequestModel
 import com.example.domain.model.user.LoginResponseModel
 import com.example.domain.model.Response
+import com.example.domain.model.user.SignupRequestModel
+import com.example.domain.model.user.SignupResponseModel
 
 interface UserRepository {
 
@@ -16,5 +18,8 @@ interface UserRepository {
         loginRequestModel: LoginRequestModel
     ): LoginResponseModel
 
+    suspend fun signup(
+        signupRequestModel: SignupRequestModel
+    ): SignupResponseModel
 
 }

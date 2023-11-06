@@ -1,4 +1,4 @@
-package com.example.app.presentation.screen.login
+package com.example.app.presentation.screen.login.screen
 
 import android.util.Log
 import android.widget.Toast
@@ -24,11 +24,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.ViewModelStoreOwner
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.app.di.HiltApplication
 import com.example.app.presentation.navigation.Screen
+import com.example.app.presentation.screen.login.viewmodel.LoginViewModel
 import com.example.app.ui.components.button.DeepButton
 import com.example.app.ui.components.textfield.DeepTextField
 import com.example.app.ui.icon.BackArrow
@@ -46,8 +45,6 @@ fun LoginScreen(
 
     var id by remember { mutableStateOf(TextFieldValue("")) }
     var password by remember { mutableStateOf(TextFieldValue("")) }
-
-    val loginState by viewModel.loginState.collectAsState()
 
     Column(
         modifier = Modifier
@@ -102,12 +99,14 @@ fun LoginScreen(
     }
 
     /** Collect */
-    LaunchedEffect(Unit) {
-        if (loginState.isSuccess) {
-            navController.navigate(Screen.PutNfc.route)
-        }
-        if (loginState.error.isNotEmpty()) {
-            Toast.makeText(context, "아이디나 비밀번호를 확인해주세요", Toast.LENGTH_SHORT).show()
+    LaunchedEffect(true) {
+        viewModel.loginState.collect {
+            if (it.isSuccess) {
+                navController.navigate(Screen.PutNfc.route)
+            }
+            if (it.error.isNotEmpty()) {
+                Toast.makeText(context, "아이디나 비밀번호를 확인해주세요", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }
