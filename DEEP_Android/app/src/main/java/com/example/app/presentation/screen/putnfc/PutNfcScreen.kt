@@ -1,6 +1,7 @@
 package com.example.app.presentation.screen.putnfc
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -32,6 +33,8 @@ import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -68,10 +71,10 @@ import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import com.example.app.MainActivity
 import com.example.app.MainViewModel
+import com.example.app.presentation.navigation.BottomNavigation
 import com.example.app.presentation.screen.cardlist.CardData
 import com.example.app.presentation.screen.cardlist.DeepTopBar
-import com.example.app.presentation.screen.create.CreateScreen
-import com.example.app.ui.theme.DeepBlue
+import com.example.app.ui.theme.Blue
 import com.example.app.util.TAG
 import com.example.app.util.deepFontFamily
 import com.example.app.util.shadow
@@ -84,7 +87,8 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
 
-@OptIn(ExperimentalPagerApi::class)
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@OptIn(ExperimentalPagerApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun PutNfcScreen(
     navController: NavController,
@@ -134,6 +138,29 @@ fun PutNfcScreen(
                 }
             }
         }
+
+//        if(isSuccessed != null){
+//            if (isSuccessed!!) {
+//                isShowAlert = true
+//                alert {
+//                    ConnectDialog(
+//                        text = "명함 등록에 성공했습니다",
+//                        onClick = { isShowAlert = false },
+//                        isShow = isShowAlert
+//                    )
+//                }
+//
+//            } else {
+//                isShowAlert = true
+//                alert {
+//                    ConnectDialog(
+//                        text = "명함 등록에 실패했습니다",
+//                        onClick = { isShowAlert = false },
+//                        isShow = isShowAlert
+//                    )
+//                }
+//            }
+//        }
     }
 
     Column(
@@ -161,7 +188,7 @@ fun PutNfcScreen(
             Spacer(modifier = Modifier.height(14.dp))
         }
 
-        
+
 
         CreateView(
             cardList,
@@ -183,8 +210,8 @@ fun PutNfcScreen(
             isButtonEnabled
         )
     }
-
 }
+
 
 @Preview
 @Composable
@@ -288,7 +315,7 @@ fun CreateButton(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight(),
-            colors = ButtonDefaults.buttonColors(containerColor = DeepBlue),
+            colors = ButtonDefaults.buttonColors(containerColor = Blue.DeepBlue),
             shape = RoundedCornerShape(16.dp),
             contentPadding = PaddingValues(vertical = 12.dp),
             enabled = isButtonEnabled
@@ -362,7 +389,7 @@ fun ConnectDialog(
                         .fillMaxWidth()
                         .height(30.dp)
                         .padding(horizontal = 40.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = DeepBlue),
+                    colors = ButtonDefaults.buttonColors(containerColor = Blue.DeepBlue),
                     shape = RoundedCornerShape(16.dp),
                     contentPadding = PaddingValues(vertical = 0.dp),
                 ) {

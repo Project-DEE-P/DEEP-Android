@@ -76,6 +76,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.core.app.ActivityCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.app.presentation.screen.cardlist.DeepTopBar
+import com.example.app.ui.theme.Blue
 import com.example.data.network.request.Message
 import com.example.domain.model.ClovaOcrDto
 import com.example.domain.model.ImageModel
@@ -137,6 +138,7 @@ fun CreateScreen(
     var requestImageFromExternalStorage : ManagedActivityResultLauncher<String,Uri?>? = null
 
     val scrollState = rememberScrollState()
+
 
     requestImageFromExternalStorage = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         if (uri != null) {

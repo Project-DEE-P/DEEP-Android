@@ -10,5 +10,17 @@ val Purple40 = Color(0xFF6650a4)
 val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
-val DeepBlue = Color(0xFF1775F9)
-val Blue100 = Color(0xFFB7D4FD)
+object Blue {
+    val Blue100 = Color(0xFFB7D4FD)
+    val DeepBlue = Color(0xFF1775F9)
+}
+
+object Gray {
+    val Line = Color(0xFFE5E7EB)
+    val Gray50 = Color(0xFFEEF0F2)
+    val Gray100 = Color(0xFFCAD0D8)
+    val Gray300 = Color(0xFF8C9AAB)
+    val Gray800 = Color(0xFF2E3947)
+    val Gray900 = Color(0xFF232C36)
+
+}

@@ -55,6 +55,7 @@ import com.example.deep_android.R
 import androidx.compose.runtime.*
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
+import com.example.app.ui.theme.Blue
 import com.example.domain.model.CardModel
 
 @Composable
@@ -145,7 +146,7 @@ fun TitleCardList(userName : String){
         val annoatedTitleString = buildAnnotatedString {
             append("${userName} 님의 ")
 
-            withStyle(style = SpanStyle(color = DeepBlue)) {
+            withStyle(style = SpanStyle(color = Blue.DeepBlue)) {
                 append("DEE:P")
             }
 

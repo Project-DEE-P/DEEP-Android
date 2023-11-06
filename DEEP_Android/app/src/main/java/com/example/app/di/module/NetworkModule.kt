@@ -2,12 +2,15 @@ package com.example.app.di.module
 
 import com.example.app.di.BASE_CLOVA_URL
 import com.example.app.di.BASE_URL
+import com.example.app.di.HiltApplication
 import com.example.data.network.api.CardApi
 import com.example.data.network.api.ClovaOcrApi
 import com.example.data.remote.api.UserApi
 import com.ggd.qualifier.BasicRetrofit
 import com.ggd.qualifier.ClovaRetrofit
+import com.example.data.network.api.UserApi
 import com.ggd.qualifier.HeaderInterceptor
+import com.google.gson.GsonBuilder
 import com.ggd.qualifier.LoggingInterceptor
 import dagger.Module
 import dagger.Provides
@@ -18,17 +21,18 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-//import okhttp3.logging.HttpLoggingInterceptor
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 class NetworkModule {
+
     /* LoginApi Type의 객체 생성 */
 
     @Provides
     @Singleton
+//    @Named("retrofit")
     fun provideCardApi(@BasicRetrofit retrofit: Retrofit): CardApi =
         retrofit.create(CardApi::class.java)
 
@@ -43,6 +47,21 @@ class NetworkModule {
         retrofit.create(ClovaOcrApi::class.java)
 
     /* Retrofit Object 생성 */
+
+    val gson = GsonBuilder()
+        .setLenient()
+        .create()
+
+//    @Provides
+//    @Singleton
+//    @Named("oauth_retrofit")
+//    fun provideOauthRetrofit(okHttpClient: OkHttpClient): Retrofit {
+//        return Retrofit.Builder()
+//            .baseUrl(OAUTH_BASE_URL)
+//            .addConverterFactory(GsonConverterFactory.create(gson))
+//            .client(okHttpClient)
+//            .build()
+//    }
 
     @BasicRetrofit
     @Provides
@@ -108,7 +127,8 @@ class NetworkModule {
     fun provideHeaderInterceptor() = Interceptor { chain ->
         with(chain) {
             val newRequest = request().newBuilder()
-                .addHeader("Authorization","Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxIiwiaWF0IjoxNjk2NTY1MDE5LCJleHAiOjE2OTcxNjk4MTksImlzcyI6IkRFRVAiLCJzdWIiOiJ0b2tlbiJ9.eMqrjy-pdqXd3WZ8QowB7AXsL-2ZNL0xhktZNtsXFIk")
+//                .addHeader("Authorization","Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJhZG1pbiIsImlhdCI6MTY5NjUxNTY1OSwiZXhwIjoxNjk3MTIwNDU5LCJpc3MiOiJERUVQIiwic3ViIjoidG9rZW4ifQ.Bl7vjv_hPUpzsl0q5BUotgYR4MSHMF4InHOs2Y6JHsw")
+                .addHeader("Authorization","Bearer " + HiltApplication.pref)
                 .build()
             proceed(newRequest)
        }
