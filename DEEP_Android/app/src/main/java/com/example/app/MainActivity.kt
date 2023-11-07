@@ -35,12 +35,12 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.app.presentation.navigation.BottomNavigation
 import com.example.app.presentation.navigation.NavGraph
+import com.example.app.presentation.screen.start.viewmodel.StartViewModel
 import com.example.app.ui.theme.DEEP_AndroidTheme
 import com.example.app.util.TAG
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.common.api.ApiException
-import com.websitebeaver.documentscanner.DocumentScanner
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.IOException
 
@@ -92,7 +92,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             DEEP_AndroidTheme {
-                MainScreenView(viewModel, this)
+                MainScreenView(viewModel)
             }
         }
 
@@ -175,7 +175,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainScreenView(
     mainViewModel: MainViewModel,
-    activity: MainActivity
 ){
     val navController = rememberNavController()
     var alert: (@Composable () -> Unit) by remember { mutableStateOf({}) }
@@ -204,7 +203,6 @@ fun MainScreenView(
                 NavGraph(
                     navController = navController,
                     mainViewModel = mainViewModel,
-                    activity = activity,
                     alert = { alert = it }
                 )
             }

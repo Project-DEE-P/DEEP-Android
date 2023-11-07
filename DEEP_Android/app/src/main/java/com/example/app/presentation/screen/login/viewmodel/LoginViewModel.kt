@@ -27,6 +27,7 @@ class LoginViewModel @Inject constructor(
         }.onSuccess {
             Log.d(TAG, "login: success!! $it")
             _loginState.emit(SignupState(isSuccess = true))
+            HiltApplication.pref.deleteToken()
             HiltApplication.pref.autoLogin = true
             HiltApplication.pref.accessToken = it.token
             HiltApplication.pref.refreshToken = it.refreshToken
