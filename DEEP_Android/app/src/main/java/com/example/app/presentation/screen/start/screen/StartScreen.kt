@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.app.di.HiltApplication
 import com.example.app.presentation.navigation.Screen
 import com.example.app.presentation.screen.start.viewmodel.StartViewModel
 import com.example.app.presentation.screen.start.oauth.GoogleApiContract
@@ -65,6 +66,10 @@ fun StartScreen(
             e.printStackTrace()
         }
     }
+
+//    if (HiltApplication.pref.autoLogin) {
+//        navController.navigate(Screen.PutNfc.route)
+//    }
 
     Column(
         modifier = Modifier
