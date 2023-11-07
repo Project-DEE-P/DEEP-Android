@@ -1,9 +1,12 @@
 package com.example.data.network.repository
 
 import com.example.data.network.api.CardApi
-import com.example.data.network.mapper.toModel
+import com.example.data.network.mapper.toDto
+import com.example.data.network.mapper.toRequest
 import com.example.data.network.request.PostCardRequest
-import com.example.domain.model.CardModel
+import com.example.data.network.response.CardResponse
+import com.example.domain.model.card.CardDto
+import com.example.domain.model.card.PostCardModel
 import com.example.domain.repository.CardRepository
 import okhttp3.MultipartBody
 import javax.inject.Inject
@@ -11,37 +14,76 @@ import javax.inject.Inject
 class CardRepositoryImpl @Inject constructor(
     private val cardApi : CardApi
 ): CardRepository {
-    override suspend fun postCard(card_image: MultipartBody.Part) {
-        cardApi.postCard((card_image))
+    override suspend fun postCard(card_image: MultipartBody.Part, request: PostCardModel) {
+        cardApi.postCard(
+            card_image,
+            request.toRequest()
+        )
     }
-    override suspend fun rememberCard(id: Int) {
-        cardApi.rememberCard(id)
+
+    override suspend fun getRememberedCardList(): List<CardDto>? {
+
+//        val list = mutableListOf<CardDto>()
+//
+//        val imageList = cardApi.getRememberedCardList().data?.map { it.toDto() }
+//        val templeteList = cardApi.getRememberedTempleteCardList().data?.map { it.toDto() }
+//
+//        if(imageList == null && templeteList == null){
+//            return null
+//        }
+//
+//        if(imageList != null){
+//            list.addAll(imageList)
+//        }
+//
+//        if(templeteList != null){
+//            list.addAll(templeteList)
+//        }
+//
+//        return list
+
+        val list = listOf<CardDto>(
+            CardDto(false,1,"1","최희건, CHOI HEE GUN","DGSW","","Android Developer","010-3159-4631","053-783-6664","nakim3159@gmail.com,nakim3159@dgsw.hs.kr","","https://github.com","","",""),
+            CardDto(false,1,"1","최희건, CHOI HEE GUN","DGSW","","Android Developer","010-3159-4631","","","","https://github.com","","",""),
+            CardDto(false,1,"1","최희건, CHOI HEE GUN","DGSW","","Android Developer","010-3159-4631","","","","https://github.com","","",""),
+            CardDto(false,1,"1","최희건, CHOI HEE GUN","DGSW","","Android Developer","010-3159-4631","","","","https://github.com","","",""),
+
+        )
+
+        return list
     }
-    override suspend fun getRememberedCardList(): List<CardModel>? =
-        listOf(
-            CardModel("","",1,"1","https://www.printrobo.co.kr/cdn/blog/870x531-pb10008.jpg"),
-            CardModel("","",2,"2","https://cdn.imweb.me/thumbnail/20210110/de526feef9241.jpg"),
-            CardModel("","",3,"3","https://marketplace.canva.com/EAFFtMpKasI/1/0/1600w/canva-%ED%9D%B0%EC%83%89-%EB%B0%B0%EA%B2%BD-%EC%BB%A8%EC%84%A4%ED%8C%85-%ED%9A%8C%EC%82%AC-%EB%AA%85%ED%95%A8-%EB%94%94%EC%9E%90%EC%9D%B8-WY2WrxEPsfE.jpg"),
-            CardModel("","",4,"4","https://www.mhsee.com/shop/data/editor/b7d3cb59ed6ddfc1.jpg"),
+
+    override suspend fun getCardList(): List<CardDto>? {
+
+//        val list = mutableListOf<CardDto>()
+//
+//        val imageList = cardApi.getCardList().data?.map { it.toDto() }
+//        val templeteList = cardApi.getTempleteCardList().data?.map { it.toDto() }
+//
+//        if(imageList == null && templeteList == null){
+//            return null
+//        }
+//
+//        if(imageList != null){
+//            list.addAll(imageList)
+//        }
+//
+//        if(templeteList != null){
+//            list.addAll(templeteList)
+//        }
+//
+//        return list
+
+        val list = listOf<CardDto>(
+            CardDto(false,1,"1","최희건, CHOI HEE GUN","DGSW","","Android Developer","010-3159-4631","053-783-6664","nakim3159@gmail.com,nakim3159@dgsw.hs.kr","","https://github.com","","",""),
+            CardDto(false,1,"1","최희건, CHOI HEE GUN","DGSW","","Android Developer","010-3159-4631","","","","https://github.com","","",""),
+            CardDto(false,1,"1","최희건, CHOI HEE GUN","DGSW","","Android Developer","010-3159-4631","","","","https://github.com","","",""),
+            CardDto(false,1,"1","최희건, CHOI HEE GUN","DGSW","","Android Developer","010-3159-4631","","","","https://github.com","","",""),
+
             )
 
-//        cardApi.getRememberedCardList().data?.map { it.toModel() }
+        return list
 
-    override suspend fun getCard(id: Int): CardModel? =
-        cardApi.getCard(id).data?.toModel()
-
-    override suspend fun getCardList(): List<CardModel>? =
-        listOf(
-            CardModel("","",1,"1","https://www.printrobo.co.kr/cdn/blog/870x531-pb10008.jpg"),
-            CardModel("","",2,"2","https://cdn.imweb.me/thumbnail/20210110/de526feef9241.jpg"),
-            CardModel("","",3,"3","https://marketplace.canva.com/EAFFtMpKasI/1/0/1600w/canva-%ED%9D%B0%EC%83%89-%EB%B0%B0%EA%B2%BD-%EC%BB%A8%EC%84%A4%ED%8C%85-%ED%9A%8C%EC%82%AC-%EB%AA%85%ED%95%A8-%EB%94%94%EC%9E%90%EC%9D%B8-WY2WrxEPsfE.jpg"),
-            CardModel("","",4,"4","https://www.mhsee.com/shop/data/editor/b7d3cb59ed6ddfc1.jpg"),
-        )
-//        cardApi.getCardList().data?.map { it.toModel() }
-
-    override suspend fun deleteCard(id: Int) {
-        cardApi.deleteCardList(id)
     }
-
 
 }

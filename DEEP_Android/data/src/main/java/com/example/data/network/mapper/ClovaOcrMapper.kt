@@ -48,7 +48,7 @@ fun com.example.data.network.response.Image.toDto() = ImageDto(
     name = this.name,
     inferResult = this.inferResult,
     message = this.message,
-    validationResult = this.validationResult.toDto()
+    validationResult = this.validationResult?.toDto()
 )
 
 fun ValidationResult.toDto() = ValidationResultDto(
@@ -56,7 +56,7 @@ fun ValidationResult.toDto() = ValidationResultDto(
 )
 
 fun NameCard.toDto() = NameCardDto(
-    meta = this.meta.toDto(),
+    meta = this.meta?.toDto(),
     result = this.result.toDto()
 )
 
@@ -80,12 +80,12 @@ fun Result.toDto() = ResultDto(
 
 fun Name.toDto() = NameDto(
     text = this.text,
-    boundingPolys = this.boundingPolys.map { it.toDto() },
+    boundingPolys = this.boundingPolys?.map { it.toDto() },
     maskingPolys = this.maskingPolys
 )
 
 fun BoundingPoly.toDto() = BoundingPolyDto(
-    vertices = this.vertices.map { it.toDto() }
+    vertices = this.vertices?.map { it.toDto() }
 )
 
 fun Vertice.toDto() = VerticeDto(

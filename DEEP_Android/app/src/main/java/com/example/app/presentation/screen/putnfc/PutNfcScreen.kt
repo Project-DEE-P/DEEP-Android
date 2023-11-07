@@ -1,87 +1,56 @@
 package com.example.app.presentation.screen.putnfc
 
-import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Context
-import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.ImageDecoder
-import android.net.Uri
-import android.os.Build
-import android.provider.MediaStore
 import android.util.Log
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.ManagedActivityResultLauncher
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.DisposableEffectResult
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import androidx.core.app.ActivityCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
-import coil.compose.rememberAsyncImagePainter
 import com.example.app.MainActivity
 import com.example.app.MainViewModel
-import com.example.app.presentation.navigation.BottomNavigation
-import com.example.app.presentation.screen.cardlist.CardData
 import com.example.app.presentation.screen.cardlist.DeepTopBar
 import com.example.app.ui.theme.Blue
 import com.example.app.util.TAG
 import com.example.app.util.deepFontFamily
 import com.example.app.util.shadow
-import com.example.data.network.repository.CardRepositoryImpl
-import com.example.deep_android.R
-import com.example.domain.model.CardModel
-import com.example.domain.repository.CardRepository
+import com.example.domain.model.card.CardDto
+import com.example.domain.model.card.PostCardModel
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
@@ -223,7 +192,7 @@ fun PreviewCreateScreen(){
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun CreateView(
-    cardList : List<CardModel>?,
+    cardList : List<CardDto>?,
     pagerState: PagerState
 ){
 
@@ -264,7 +233,7 @@ fun CreateView(
 
 @Composable
 fun CardItem(
-    data : CardModel
+    data : CardDto
 ){
     Column(
         modifier = Modifier
@@ -276,7 +245,7 @@ fun CardItem(
     ) {
 
         Text(
-            text = if (data.createdDateTime.length > 10) data.createdDateTime.substring(0, 10) else "시간 오류",
+            text = /*if (data.createdDateTime.length > 10) data.createdDateTime.substring(0, 10) else */"시간 오류",
             color = Color.Gray,
             fontSize = 14.sp,
             fontFamily = deepFontFamily,
@@ -291,7 +260,7 @@ fun CardItem(
                 .shadow(Color(0x16000000), 0.dp, 5.dp, 15.dp)
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(16.dp)),
-            model = data.imagePath,
+            model = /*data.imagePath*/"https://file.newswire.co.kr/data/datafile2/thumb_480/2010/03/2089341128_20100308105030_1283149681.jpg",
             contentDescription = "명함 이미지입니다",
             contentScale = ContentScale.FillWidth
         )
