@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.app.MainViewModel
 import com.example.app.presentation.screen.card.CardScreen
+import com.example.app.presentation.screen.carddetail.CardDetailScreen
 import com.example.app.presentation.screen.cardlist.CardListScreen
 import com.example.app.presentation.screen.create.CreateScreen
 import com.example.app.presentation.screen.login.screen.LoginScreen
@@ -37,7 +38,7 @@ fun NavGraph(
             SignupScreen(navController = navController)
         }
         composable(route = Screen.CardList.route){
-            CardListScreen(navController = navController)
+            CardListScreen(navController = navController, mainViewModel = mainViewModel)
         }
         composable(route = Screen.Card.route){
             CardScreen(navController = navController)
@@ -50,6 +51,9 @@ fun NavGraph(
         }
         composable(route = Screen.PutNfc.route){
             PutNfcScreen(navController = navController, mainViewModel = mainViewModel, alert = alert)
+        }
+        composable(route = Screen.CardDetail.route){
+            CardDetailScreen(mainViewModel = mainViewModel)
         }
     }
 }

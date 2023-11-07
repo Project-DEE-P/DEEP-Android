@@ -1,6 +1,5 @@
 package com.example.domain.repository
 
-import com.example.domain.model.CardModel
 import com.example.domain.model.ClovaOcrDto
 import com.example.domain.model.MessageModel
 import okhttp3.MultipartBody

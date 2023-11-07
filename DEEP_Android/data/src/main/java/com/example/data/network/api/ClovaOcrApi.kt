@@ -15,7 +15,7 @@ interface ClovaOcrApi {
     @POST("name-card")
     suspend fun postClovaOcr(
         @Header("X-OCR-SECRET") secret : String = "Rk1KWnVyUnlRcEZzdUJEbkVBeU9vTU9QcG1pRlhOQWk=",
-        @Header("Content-Type") contentType : String = "multipart/form-data",
+//        @Header("Content-Type") contentType : String = "multipart/form-data",
         @Part("message") message : Message,
         @Part file : List<MultipartBody.Part>
     ) : ClovaOcrResponse
