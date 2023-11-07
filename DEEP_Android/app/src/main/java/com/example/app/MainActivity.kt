@@ -45,7 +45,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             DEEP_AndroidTheme {
-                MainScreenView(viewModel, this)
+                MainScreenView(viewModel)
             }
         }
 
@@ -128,7 +128,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainScreenView(
     mainViewModel: MainViewModel,
-    activity: MainActivity
 ){
     val navController = rememberNavController()
     var alert: (@Composable () -> Unit) by remember { mutableStateOf({}) }
@@ -157,7 +156,6 @@ fun MainScreenView(
                 NavGraph(
                     navController = navController,
                     mainViewModel = mainViewModel,
-                    activity = activity,
                     alert = { alert = it }
                 )
             }

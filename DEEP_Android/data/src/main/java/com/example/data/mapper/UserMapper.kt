@@ -15,8 +15,7 @@ fun GoogleOauthResponseDto.toModel() = GoogleOauthResponseModel(
 )
 
 fun GoogleOauthRequestModel.toDto() = GoogleOauthRequestDto(
-    id = this.id,
-    email = this.email
+    token = this.token
 )
 
 fun LoginRequestModel.toDto() = LoginRequestDto(
