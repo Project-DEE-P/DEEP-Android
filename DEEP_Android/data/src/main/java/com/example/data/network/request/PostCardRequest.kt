@@ -3,5 +3,16 @@ package com.example.data.network.request
 import okhttp3.MultipartBody
 
 data class PostCardRequest(
-    val card_image : MultipartBody.Part
+
+    var name : String,
+    var company : String,
+    var address : String,
+    var position : String,
+    var mobile : String,
+    var tel : String,
+    var email : String,
+    var fax : String,
+    var homepage : String,
+    var department : String
+
 )

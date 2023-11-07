@@ -7,7 +7,8 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.app.util.TAG
-import com.example.domain.model.CardModel
+import com.example.domain.model.card.CardDto
+import com.example.domain.model.card.PostCardModel
 import com.example.domain.repository.CardRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -19,7 +20,7 @@ class PutNfcViewModel @Inject constructor(
     private val cardRepository: CardRepository
 ): ViewModel() {
 
-    var cardList by mutableStateOf<List<CardModel>?>(null)
+    var cardList by mutableStateOf<List<CardDto>?>(null)
 
 
     fun getCardList() = viewModelScope.launch(Dispatchers.IO) {

@@ -1,8 +1,7 @@
-package com.example.data.network.response
+package com.example.domain.model.card
 
-data class CardResponse(
-    var id: Long,
-    var uid: String,
+data class PostCardModel(
+
     var name : String,
     var company : String,
     var address : String,
@@ -12,7 +11,6 @@ data class CardResponse(
     var email : String,
     var fax : String,
     var homepage : String,
-    var department : String,
-    var createdDateTime: String,
-    var modifiedDateTime: String
+    var department : String
+
 )

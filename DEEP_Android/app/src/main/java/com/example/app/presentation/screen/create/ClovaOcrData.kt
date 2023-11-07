@@ -1,32 +1,32 @@
-package com.example.data.network.response
+package com.example.app.presentation.screen.create
 
-data class ClovaOcrResponse(
+data class ClovaOcrData(
 
-    val version : String?,
-    val requestId : String?,
-    val timestamp : Long?,
+    val version : String,
+    val requestId : String,
+    val timestamp : Long,
     val images : List<Image>
 )
 
 data class Image(
 
     val nameCard : NameCard,
-    val uid : String?,
-    val name : String?,
-    val inferResult : String?,
-    val message : String?,
-    val validationResult : ValidationResult?
+    val uid : String,
+    val name : String,
+    val inferResult : String,
+    val message : String,
+    val validationResult : ValidationResult
 )
 data class ValidationResult(
-    val result : String?
+    val result : String
 )
 
 data class NameCard(
-    val meta : Meta?,
+    val meta : Meta,
     val result : Result
 )
 data class Meta(
-    val estimatedLanguage : String?
+    val estimatedLanguage : String
 )
 
 data class Result(
@@ -45,15 +45,15 @@ data class Result(
 
 data class Name(
     val text : String,
-    val boundingPolys : List<BoundingPoly>?,
-    val maskingPolys : List<Any>?
+    val boundingPolys : List<BoundingPoly>,
+    val maskingPolys : List<Any>
 )
 
 data class BoundingPoly(
-    val vertices : List<Vertice>?
+    val vertices : List<Vertice>
 )
 
 data class Vertice(
-    val x : Float?,
-    val y : Float?
+    val x : Float,
+    val y : Float
 )

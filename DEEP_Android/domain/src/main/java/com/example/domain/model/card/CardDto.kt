@@ -1,6 +1,7 @@
-package com.example.data.network.response
+package com.example.domain.model.card
 
-data class CardResponse(
+data class CardDto(
+    var isTemplete : Boolean,
     var id: Long,
     var uid: String,
     var name : String,

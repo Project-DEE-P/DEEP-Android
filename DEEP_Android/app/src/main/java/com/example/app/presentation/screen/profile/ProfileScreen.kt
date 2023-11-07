@@ -15,12 +15,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,20 +31,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.app.presentation.navigation.Screen
-import com.example.app.presentation.screen.cardlist.CardData
-import com.example.app.presentation.screen.cardlist.CardListItem
 import com.example.app.presentation.screen.cardlist.DeepTopBar
 import com.example.app.util.deepFontFamily
 import com.example.app.util.shadow
 import androidx.compose.runtime.*
-import androidx.compose.ui.platform.LocalContext
 import coil.compose.AsyncImage
-import coil.compose.rememberAsyncImagePainter
-import coil.request.ImageRequest
 import com.example.deep_android.R
-import com.example.domain.model.CardModel
+import com.example.domain.model.card.CardDto
+import com.example.domain.model.card.PostCardModel
 
 @Composable
 fun ProfileScreen(
@@ -85,7 +75,7 @@ fun ProfileScreen(
             CardList(
                 cardList,
                 {
-                    viewModel.deleteCard(cardList!![it].id)
+//                    viewModel.deleteCard(cardList!![it].id)
                 }
             )
         }
@@ -172,21 +162,20 @@ fun ListTitle(
             fontSize = 20.sp
         )
 
-        Button(
-            onClick = onCreateClick,
-            colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent)
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_plus),
-                contentDescription = "명함 제작 버튼입니다")
-        }
+
+        Image(
+            painter = painterResource(id = R.drawable.ic_plus),
+            contentDescription = "명함 제작 버튼입니다",
+            modifier = Modifier.clickable { onCreateClick() }
+        )
+
     }
 
 }
 
 @Composable
 fun CardList(
-    list : List<CardModel>?,
+    list : List<CardDto>?,
     onDeleteClick: (id: Int) -> Unit
 ){
     if (list != null){
@@ -200,7 +189,7 @@ fun CardList(
             ) {
                 itemsIndexed(
                     list
-                ) { index: Int, item: CardModel ->
+                ) { index: Int, item: CardDto ->
                     CardItem(data = item, index,onDeleteClick)
                 }
             }
@@ -222,7 +211,7 @@ fun CardList(
 
 @Composable
 fun CardItem(
-    data : CardModel,
+    data : CardDto,
     index : Int,
     onDeleteClick : (id : Int) -> Unit
 ){
@@ -239,7 +228,7 @@ fun CardItem(
             horizontalArrangement = Arrangement.SpaceBetween
         ){
             Text(
-                text = if (data.createdDateTime.length > 10) data.createdDateTime.substring(0, 10) else "시간 오류",
+                text = /*if (data.createdDateTime.length > 10) data.createdDateTime.substring(0, 10) else */"시간 오류",
                 color = Color.Gray,
                 fontSize = 14.sp,
                 fontFamily = deepFontFamily,
@@ -264,7 +253,7 @@ fun CardItem(
                 .shadow(Color(0x16000000), 0.dp, 5.dp, 15.dp)
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(16.dp)),
-            model = data.imagePath,
+            model = /*data.imagePath*/"https://file.newswire.co.kr/data/datafile2/thumb_480/2010/03/2089341128_20100308105030_1283149681.jpg",
             contentDescription = "명함 이미지입니다",
             contentScale = ContentScale.FillWidth
         )

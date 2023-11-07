@@ -8,6 +8,7 @@ sealed class Screen(val route : String) {
     object Signup: Screen("signup_screen")
     object Card : Screen("card_screen")
     object CardList : Screen("card_list_screen")
+    object CardDetail : Screen("card_detail_screen")
     object Create : Screen("create_screen")
     object Profile : Screen("profile_screen")
     object PutNfc : Screen("put_nfc_screen")
