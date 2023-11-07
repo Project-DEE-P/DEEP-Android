@@ -52,6 +52,8 @@ import com.example.app.util.deepFontFamily
 import com.example.app.util.shadow
 import com.example.deep_android.R
 import androidx.compose.runtime.*
+import coil.compose.AsyncImage
+import coil.compose.rememberAsyncImagePainter
 import com.example.app.ui.theme.Blue
 import com.example.domain.model.CardModel
 
@@ -62,6 +64,12 @@ fun CardListScreen(
 ){
 
     val rememberedCardList by rememberUpdatedState(newValue = viewModel.rememberedCardList)
+
+    DisposableEffect(Unit){
+        viewModel.getRememberedCardList()
+
+        onDispose {  }
+    }
 
     Column(
         modifier = Modifier
@@ -157,27 +165,29 @@ fun TitleCardList(userName : String){
 @Composable
 fun CardList(cardList : List<CardModel>?){
     if(cardList != null){
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight(),
-            verticalArrangement = Arrangement.spacedBy(30.dp)
-        ) {
-            itemsIndexed(
-                cardList
-            ) { index: Int, item: CardModel ->
-                CardListItem(data = item)
+        if (!cardList.isEmpty()) {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
+                verticalArrangement = Arrangement.spacedBy(30.dp)
+            ) {
+                itemsIndexed(
+                    cardList
+                ) { index: Int, item: CardModel ->
+                    CardListItem(data = item)
+                }
             }
+        } else {
+            Text(
+                text = "저장된 명함이 없습니다",
+                color = Color.Black,
+                fontSize = 25.sp,
+                fontFamily = deepFontFamily,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(horizontal = 18.dp)
+            )
         }
-    }
-    else {
-        Text(
-            text = "저장된 명함이 없습니다",
-            color = Color.Black,
-            fontSize = 25.sp,
-            fontFamily = deepFontFamily,
-            fontWeight = FontWeight.Bold
-        )
     }
 }
 
@@ -198,6 +208,7 @@ fun CardListItem(data : CardModel){
             ) {
                 Text(
                     text = "${data.uid} 님의 명함",
+                    modifier = Modifier.padding(start = 5.dp),
                     color = Color.Black,
                     fontSize = 16.sp,
                     fontFamily = deepFontFamily,
@@ -214,9 +225,8 @@ fun CardListItem(data : CardModel){
                     fontWeight = FontWeight.Normal
                 )
             }
-
             Image(
-                modifier = Modifier.height(20.dp),
+                modifier = Modifier.height(20.dp).padding(end = 5.dp),
                 painter = painterResource(id = R.drawable.ic_three_dot),
                 contentDescription = "더보기 버튼입니다"
             )
@@ -224,12 +234,12 @@ fun CardListItem(data : CardModel){
 
         Spacer(modifier = Modifier.height(5.dp))
 
-        Image(
+        AsyncImage(
             modifier = Modifier
                 .shadow(Color(0x16000000), 0.dp, 5.dp, 15.dp)
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(16.dp)),
-            painter = painterResource(id = R.drawable.img_card_dummy),
+            model = data.imagePath,
             contentDescription = "명함 이미지입니다",
             contentScale = ContentScale.FillWidth
         )

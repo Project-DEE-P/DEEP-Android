@@ -2,6 +2,7 @@ package com.example.app.presentation.screen.profile
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -33,6 +34,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.app.presentation.navigation.Screen
@@ -41,12 +43,26 @@ import com.example.app.presentation.screen.cardlist.CardListItem
 import com.example.app.presentation.screen.cardlist.DeepTopBar
 import com.example.app.util.deepFontFamily
 import com.example.app.util.shadow
+import androidx.compose.runtime.*
+import androidx.compose.ui.platform.LocalContext
+import coil.compose.AsyncImage
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
 import com.example.deep_android.R
+import com.example.domain.model.CardModel
 
 @Composable
 fun ProfileScreen(
-    navController: NavController
+    navController: NavController,
+    viewModel: ProfileViewModel = hiltViewModel()
 ){
+
+    val cardList by rememberUpdatedState(newValue = viewModel.cardList)
+    val isSuccess by rememberUpdatedState(newValue = viewModel.isSuccess)
+
+    LaunchedEffect(isSuccess){
+        viewModel.getCardList()
+    }
 
     Column(
         modifier = Modifier
@@ -67,13 +83,10 @@ fun ProfileScreen(
             Spacer(modifier = Modifier.height(6.dp))
 
             CardList(
-                listOf(
-                    CardData("최희건", "2023년 6월 13일"),
-                    CardData("최희건", "2023년 6월 13일"),
-                    CardData("최희건", "2023년 6월 13일"),
-                    CardData("최희건", "2023년 6월 13일"),
-                    CardData("최희건", "2023년 6월 13일")
-                )
+                cardList,
+                {
+                    viewModel.deleteCard(cardList!![it].id)
+                }
             )
         }
     }
@@ -82,7 +95,31 @@ fun ProfileScreen(
 @Composable
 @Preview
 fun PreviewProfileScreen(){
-    ProfileScreen(navController = rememberNavController())
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = Color.White)
+    ) {
+        DeepTopBar(onLogoClick = {}, onCategoryClick = {})
+
+        Spacer(modifier = Modifier.height(60.dp))
+
+        ProfileTitle("최희건")
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        Column(
+            modifier = Modifier.wrapContentHeight()
+        ){
+            ListTitle("최희건", {  })
+
+            Spacer(modifier = Modifier.height(6.dp))
+
+            CardList(
+                null,{}
+            )
+        }
+    }
 }
 
 @Composable
@@ -149,39 +186,45 @@ fun ListTitle(
 
 @Composable
 fun CardList(
-    list : List<CardData>?
+    list : List<CardModel>?,
+    onDeleteClick: (id: Int) -> Unit
 ){
-    if(list!=null){
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-                .padding(horizontal = 18.dp),
-            verticalArrangement = Arrangement.spacedBy(30.dp)
-        ) {
-            itemsIndexed(
-                list!!
-            ) { index: Int, item: CardData ->
-                CardItem(data = item)
+    if (list != null){
+        if (!list.isEmpty()) {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .padding(horizontal = 18.dp),
+                verticalArrangement = Arrangement.spacedBy(30.dp)
+            ) {
+                itemsIndexed(
+                    list
+                ) { index: Int, item: CardModel ->
+                    CardItem(data = item, index,onDeleteClick)
+                }
             }
-        }
-    }
-    else{
-        Text(
-            text = "제작된 명함이 없습니다",
-            color = Color.Black,
-            fontFamily = deepFontFamily,
-            fontWeight = FontWeight.SemiBold,
-            fontSize = 20.sp
-        )
+        } else {
 
+            Text(
+                text = "제작된 명함이 없습니다",
+                color = Color.Black,
+                fontSize = 25.sp,
+                fontFamily = deepFontFamily,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(horizontal = 18.dp)
+            )
+
+        }
     }
 
 }
 
 @Composable
 fun CardItem(
-    data : CardData
+    data : CardModel,
+    index : Int,
+    onDeleteClick : (id : Int) -> Unit
 ){
     Column(
         modifier = Modifier
@@ -190,23 +233,38 @@ fun CardItem(
         horizontalAlignment = Alignment.Start
     ) {
 
-        Text(
-            text = data.date,
-            color = Color.Gray,
-            fontSize = 14.sp,
-            fontFamily = deepFontFamily,
-            fontWeight = FontWeight.SemiBold,
-            modifier = Modifier.padding(start = 5.dp)
-        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ){
+            Text(
+                text = if (data.createdDateTime.length > 10) data.createdDateTime.substring(0, 10) else "시간 오류",
+                color = Color.Gray,
+                fontSize = 14.sp,
+                fontFamily = deepFontFamily,
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.padding(start = 5.dp)
+            )
 
+            Image(
+                modifier = Modifier.height(20.dp)
+                    .clickable {
+                        onDeleteClick(index)
+                    }.padding(end = 5.dp),
+                painter = painterResource(id = R.drawable.ic_three_dot),
+                contentDescription = "더보기 버튼입니다"
+            )
+
+        }
         Spacer(modifier = Modifier.height(5.dp))
 
-        Image(
+        AsyncImage(
             modifier = Modifier
                 .shadow(Color(0x16000000), 0.dp, 5.dp, 15.dp)
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(16.dp)),
-            painter = painterResource(id = R.drawable.img_card_dummy),
+            model = data.imagePath,
             contentDescription = "명함 이미지입니다",
             contentScale = ContentScale.FillWidth
         )

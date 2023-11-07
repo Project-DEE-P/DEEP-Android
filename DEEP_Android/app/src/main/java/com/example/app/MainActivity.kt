@@ -2,6 +2,9 @@ package com.example.app
 
 import android.app.PendingIntent
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Matrix
 import android.nfc.NdefMessage
 import android.nfc.NdefRecord
 import android.nfc.NfcAdapter
@@ -12,6 +15,9 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
@@ -29,8 +35,12 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.app.presentation.navigation.BottomNavigation
 import com.example.app.presentation.navigation.NavGraph
+import com.example.app.presentation.screen.start.viewmodel.StartViewModel
 import com.example.app.ui.theme.DEEP_AndroidTheme
 import com.example.app.util.TAG
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.common.api.ApiException
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.IOException
 
@@ -38,10 +48,47 @@ import java.io.IOException
 class MainActivity : ComponentActivity() {
 
     private val viewModel : MainViewModel by viewModels()
+    val startViewModel : StartViewModel by viewModels()
+
+    lateinit var documentScanner: DocumentScanner
+    lateinit var launcher: ActivityResultLauncher<Intent>
 
     @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        documentScanner = DocumentScanner(
+            this,
+            { croppedImageResults ->
+                Log.d(TAG,"DocumentScanner - ${croppedImageResults}")
+                // display the first cropped image
+                val bitmap = BitmapFactory.decodeFile(croppedImageResults.first())
+
+                val matrix = Matrix()
+                matrix.setRotate(270F)
+                val dscBitmap = Bitmap.createBitmap(bitmap,0,0,bitmap.width, bitmap.height,matrix,true)
+                bitmap.recycle()
+
+                viewModel.bitmap = dscBitmap
+
+
+            },
+            {
+                // an error happened
+                    errorMessage -> Log.v("documentscannerlogs", errorMessage)
+            },
+            {
+                // user canceled document scan
+                Log.v("documentscannerlogs", "User canceled document scan")
+            }
+        )
+
+
+            launcher = registerForActivityResult(
+                ActivityResultContracts.StartActivityForResult()
+            ) { result: ActivityResult -> documentScanner.handleDocumentScanIntentResult(result) }
+
+
 
         setContent {
             DEEP_AndroidTheme {
@@ -162,6 +209,6 @@ fun MainScreenView(
         }
         alert()
     }
-    
+
 
 }

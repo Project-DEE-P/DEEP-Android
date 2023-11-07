@@ -87,6 +87,7 @@ fun StartScreen(
             onClick = {
                 Log.d(TAG, "I clicked login button")
                 navController.navigate(Screen.Login.route)
+                navController.navigate(Screen.CardList.route)
             }
         )
         Spacer(modifier = Modifier.height(16.dp))

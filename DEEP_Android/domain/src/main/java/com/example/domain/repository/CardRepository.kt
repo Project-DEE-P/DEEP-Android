@@ -7,7 +7,7 @@ interface CardRepository {
 
     suspend fun postCard(
         card_image : MultipartBody.Part
-    ) : String?
+    )
 
     suspend fun rememberCard(
         id : Int
@@ -24,4 +24,8 @@ interface CardRepository {
     suspend fun getCardList(
 
     ) : List<CardModel>?
+
+    suspend fun deleteCard(
+        id : Int
+    )
 }

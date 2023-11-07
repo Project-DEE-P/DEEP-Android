@@ -38,6 +38,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.DisposableEffectResult
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
@@ -62,7 +64,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.core.app.ActivityCompat
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import coil.compose.AsyncImage
+import coil.compose.rememberAsyncImagePainter
 import com.example.app.MainActivity
 import com.example.app.MainViewModel
 import com.example.app.presentation.navigation.BottomNavigation
@@ -74,6 +80,7 @@ import com.example.app.util.deepFontFamily
 import com.example.app.util.shadow
 import com.example.data.network.repository.CardRepositoryImpl
 import com.example.deep_android.R
+import com.example.domain.model.CardModel
 import com.example.domain.repository.CardRepository
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -83,7 +90,12 @@ import com.google.accompanist.pager.rememberPagerState
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalPagerApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun PutNfcScreen(navController: NavController, mainViewModel: MainViewModel, alert: (@Composable () -> Unit) -> Unit){
+fun PutNfcScreen(
+    navController: NavController,
+    mainViewModel: MainViewModel,
+    alert: (@Composable () -> Unit) -> Unit,
+    viewModel: PutNfcViewModel = hiltViewModel()
+){
     val text by rememberUpdatedState(newValue = mainViewModel.text)
     val textColor by rememberUpdatedState(newValue = mainViewModel.textColor)
     val isButtonEnabled by rememberUpdatedState(newValue = mainViewModel.isButtonEnabled)
@@ -95,9 +107,13 @@ fun PutNfcScreen(navController: NavController, mainViewModel: MainViewModel, ale
 
     val pagerState = rememberPagerState()
 
-    val cardList = listOf(CardData("PARAOOO","2023년 6월 13일"),CardData("SeokgyuYun","2023년 6월 13일"),CardData("yr0118kim","2023년 6월 13일"),CardData("snack655","2023년 6월 13일"),CardData("최희건","2023년 6월 13일"))
+    val cardList by rememberUpdatedState(newValue = viewModel.cardList)
 
-//    mainViewModel.getList()
+    DisposableEffect(Unit){
+        viewModel.getCardList()
+
+        onDispose {}
+    }
 
     LaunchedEffect(Unit) {
         mainViewModel.successEvent.collect {
@@ -154,7 +170,25 @@ fun PutNfcScreen(navController: NavController, mainViewModel: MainViewModel, ale
         verticalArrangement = Arrangement.SpaceBetween
     ) {
 
-        DeepTopBar({}, {})
+
+
+        Column(){
+            DeepTopBar({}, {})
+
+            Text(
+                text = "NFC 태그에 명함 넣기",
+                color = Color.Black,
+                fontFamily = deepFontFamily,
+                fontWeight = FontWeight.Bold,
+                fontSize = 20.sp,
+                modifier = Modifier
+                    .padding(horizontal = 18.dp)
+            )
+
+            Spacer(modifier = Modifier.height(14.dp))
+        }
+
+
 
         CreateView(
             cardList,
@@ -167,7 +201,7 @@ fun PutNfcScreen(navController: NavController, mainViewModel: MainViewModel, ale
 
                 if(mainViewModel.intent != null){
                     val ndefMessage =
-                        (activity as MainActivity).createNdefMessage("https://www.github.com/${cardList[pagerState.currentPage].name}")
+                        (activity as MainActivity).createNdefMessage("https://de2p.vercel.app/showcard/5")
                     (activity as MainActivity).writeNdefMessageToTag(mainViewModel.intent!!, ndefMessage)
                 }
             },
@@ -189,7 +223,7 @@ fun PreviewCreateScreen(){
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun CreateView(
-    cardList : List<CardData>?,
+    cardList : List<CardModel>?,
     pagerState: PagerState
 ){
 
@@ -198,32 +232,30 @@ fun CreateView(
             .fillMaxWidth()
             .wrapContentHeight()
     ) {
-        Text(
-            text = "NFC 태그에 명함 넣기",
-            color = Color.Black,
-            fontFamily = deepFontFamily,
-            fontWeight = FontWeight.Bold,
-            fontSize = 20.sp,
-            modifier = Modifier
-                .padding(horizontal = 18.dp)
-        )
-
-        Spacer(modifier = Modifier.height(14.dp))
 
         if(cardList != null){
+            if (!cardList.isEmpty()) {
 
-            HorizontalPager(
-                count = cardList.size,
-                state = pagerState,
-                modifier = Modifier
-                    .wrapContentHeight()
-                    .fillMaxWidth()
-            ) {
-                CardItem(cardList[it])
+                HorizontalPager(
+                    count = cardList.size,
+                    state = pagerState,
+                    modifier = Modifier
+                        .wrapContentHeight()
+                        .fillMaxWidth()
+                ) {
+                    CardItem(cardList[it])
+                }
+            } else {
+                Text(
+                    text = "제작된 명함이 없습니다",
+                    color = Color.Black,
+                    fontSize = 25.sp,
+                    fontFamily = deepFontFamily,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(horizontal = 18.dp)
+                )
+
             }
-        }
-        else {
-            Text(text = "하하 명함이 없네요")
         }
 
     }
@@ -232,18 +264,19 @@ fun CreateView(
 
 @Composable
 fun CardItem(
-    data : CardData
+    data : CardModel
 ){
     Column(
         modifier = Modifier
             .wrapContentWidth()
             .wrapContentHeight()
-            .background(color = Color.White),
+            .background(color = Color.White)
+            .padding(horizontal = 18.dp),
         horizontalAlignment = Alignment.Start
     ) {
 
         Text(
-            text = data.date,
+            text = if (data.createdDateTime.length > 10) data.createdDateTime.substring(0, 10) else "시간 오류",
             color = Color.Gray,
             fontSize = 14.sp,
             fontFamily = deepFontFamily,
@@ -253,12 +286,12 @@ fun CardItem(
 
         Spacer(modifier = Modifier.height(5.dp))
 
-        Image(
+        AsyncImage(
             modifier = Modifier
                 .shadow(Color(0x16000000), 0.dp, 5.dp, 15.dp)
-                .width(340.dp)
+                .fillMaxWidth()
                 .clip(RoundedCornerShape(16.dp)),
-            painter = painterResource(id = R.drawable.img_card_dummy),
+            model = data.imagePath,
             contentDescription = "명함 이미지입니다",
             contentScale = ContentScale.FillWidth
         )
