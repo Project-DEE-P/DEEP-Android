@@ -151,7 +151,7 @@ fun CreateScreen(
         ) {
             DialogContent(
                 onCameraClick = {
-                    activity.launcher.launch(activity.documentScanner.createDocumentScanIntent())
+//                    activity.launcher.launch(activity.documentScanner.createDocumentScanIntent())
                     viewModel.dialogState = false
                 },
                 onGalleryClick = {
