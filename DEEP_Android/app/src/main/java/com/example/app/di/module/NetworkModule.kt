@@ -89,12 +89,14 @@ class NetworkModule {
     @Provides
     fun provideOkHttpClient(
         @HeaderInterceptor headerInterceptor: Interceptor,
+        loggerInterceptor: HttpLoggingInterceptor
     ): OkHttpClient {
         val okHttpClientBuilder = OkHttpClient().newBuilder()
         okHttpClientBuilder.connectTimeout(60, TimeUnit.SECONDS)
         okHttpClientBuilder.readTimeout(60, TimeUnit.SECONDS)
         okHttpClientBuilder.writeTimeout(60, TimeUnit.SECONDS)
         okHttpClientBuilder.addInterceptor(headerInterceptor)
+        okHttpClientBuilder.addInterceptor(loggerInterceptor)
 
         return okHttpClientBuilder.build()
     }
@@ -119,6 +121,11 @@ class NetworkModule {
 //    @LoggingInterceptor
 //    fun provideLoggingInterceptor(): HttpLoggingInterceptor =
 //        HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY }
+
+    @Provides
+    @Singleton
+    fun provideLoggingInterceptor(): HttpLoggingInterceptor =
+        HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY }
 
     @Provides
     @Singleton
