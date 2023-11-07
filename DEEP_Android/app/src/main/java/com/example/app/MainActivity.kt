@@ -50,43 +50,43 @@ class MainActivity : ComponentActivity() {
     private val viewModel : MainViewModel by viewModels()
     val startViewModel : StartViewModel by viewModels()
 
-    lateinit var documentScanner: DocumentScanner
+//    lateinit var documentScanner: DocumentScanner
     lateinit var launcher: ActivityResultLauncher<Intent>
 
     @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        documentScanner = DocumentScanner(
-            this,
-            { croppedImageResults ->
-                Log.d(TAG,"DocumentScanner - ${croppedImageResults}")
-                // display the first cropped image
-                val bitmap = BitmapFactory.decodeFile(croppedImageResults.first())
+//        documentScanner = DocumentScanner(
+//            this,
+//            { croppedImageResults ->
+//                Log.d(TAG,"DocumentScanner - ${croppedImageResults}")
+//                // display the first cropped image
+//                val bitmap = BitmapFactory.decodeFile(croppedImageResults.first())
+//
+//                val matrix = Matrix()
+//                matrix.setRotate(270F)
+//                val dscBitmap = Bitmap.createBitmap(bitmap,0,0,bitmap.width, bitmap.height,matrix,true)
+//                bitmap.recycle()
+//
+//                viewModel.bitmap = dscBitmap
+//
+//
+//            },
+//            {
+//                // an error happened
+//                    errorMessage -> Log.v("documentscannerlogs", errorMessage)
+//            },
+//            {
+//                // user canceled document scan
+//                Log.v("documentscannerlogs", "User canceled document scan")
+//            }
+//        )
 
-                val matrix = Matrix()
-                matrix.setRotate(270F)
-                val dscBitmap = Bitmap.createBitmap(bitmap,0,0,bitmap.width, bitmap.height,matrix,true)
-                bitmap.recycle()
 
-                viewModel.bitmap = dscBitmap
-
-
-            },
-            {
-                // an error happened
-                    errorMessage -> Log.v("documentscannerlogs", errorMessage)
-            },
-            {
-                // user canceled document scan
-                Log.v("documentscannerlogs", "User canceled document scan")
-            }
-        )
-
-
-            launcher = registerForActivityResult(
-                ActivityResultContracts.StartActivityForResult()
-            ) { result: ActivityResult -> documentScanner.handleDocumentScanIntentResult(result) }
+//            launcher = registerForActivityResult(
+//                ActivityResultContracts.StartActivityForResult()
+//            ) { result: ActivityResult -> documentScanner.handleDocumentScanIntentResult(result) }
 
 
 
