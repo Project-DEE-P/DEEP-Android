@@ -12,6 +12,7 @@ sealed class Screen(val route : String) {
     object Create : Screen("create_screen")
     object Profile : Screen("profile_screen")
     object PutNfc : Screen("put_nfc_screen")
+    object Setting : Screen("setting_screen")
 }
 
 sealed class BottomNavItem(val title : String, val icon : Int, val route : String) {

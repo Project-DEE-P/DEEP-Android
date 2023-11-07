@@ -67,10 +67,6 @@ fun StartScreen(
         }
     }
 
-//    if (HiltApplication.pref.autoLogin) {
-//        navController.navigate(Screen.PutNfc.route)
-//    }
-
     Column(
         modifier = Modifier
             .fillMaxSize()

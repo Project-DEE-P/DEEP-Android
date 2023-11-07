@@ -37,6 +37,7 @@ import com.example.app.util.deepFontFamily
 import com.example.app.util.shadow
 import androidx.compose.runtime.*
 import coil.compose.AsyncImage
+import com.example.app.ui.icon.SettingButton
 import com.example.deep_android.R
 import com.example.domain.model.card.CardDto
 import com.example.domain.model.card.PostCardModel
@@ -59,9 +60,18 @@ fun ProfileScreen(
             .fillMaxSize()
             .background(color = Color.White)
     ) {
-        DeepTopBar(onLogoClick = {}, onCategoryClick = {})
-
-        Spacer(modifier = Modifier.height(60.dp))
+//        DeepTopBar(onLogoClick = {}, onCategoryClick = {})
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(56.dp)
+        ) {
+            Spacer(modifier = Modifier.weight(1f))
+            SettingButton {
+                navController.navigate(Screen.Setting.route)
+            }
+        }
+        Spacer(modifier = Modifier.height(10.dp))
 
         ProfileTitle("최희건")
 
@@ -237,10 +247,12 @@ fun CardItem(
             )
 
             Image(
-                modifier = Modifier.height(20.dp)
+                modifier = Modifier
+                    .height(20.dp)
                     .clickable {
                         onDeleteClick(index)
-                    }.padding(end = 5.dp),
+                    }
+                    .padding(end = 5.dp),
                 painter = painterResource(id = R.drawable.ic_three_dot),
                 contentDescription = "더보기 버튼입니다"
             )
