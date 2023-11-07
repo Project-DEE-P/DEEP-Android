@@ -20,6 +20,7 @@ object Gray {
     val Gray50 = Color(0xFFEEF0F2)
     val Gray100 = Color(0xFFCAD0D8)
     val Gray300 = Color(0xFF8C9AAB)
+    val Gray600 = Color(0xFF4C5F75)
     val Gray800 = Color(0xFF2E3947)
     val Gray900 = Color(0xFF232C36)
 

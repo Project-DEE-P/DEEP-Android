@@ -32,7 +32,7 @@ import com.example.app.presentation.navigation.Screen
 import com.example.app.presentation.screen.login.viewmodel.LoginViewModel
 import com.example.app.ui.components.button.DeepButton
 import com.example.app.ui.components.textfield.DeepTextField
-import com.example.app.ui.icon.BackArrow
+import com.example.app.ui.icon.BackArrowButton
 import com.example.app.ui.theme.Blue
 import com.example.app.ui.theme.Gray
 import com.example.app.util.deepFontFamily
@@ -55,9 +55,9 @@ fun LoginScreen(
             )
             .fillMaxSize()
     ) {
-        BackArrow(navController = navController)
+        BackArrowButton(navController = navController)
         Text(
-            modifier = Modifier.padding(start = 24.dp, top = 51.dp),
+            modifier = Modifier.padding(start = 24.dp, top = 35.dp),
             text = "로그인",
             fontFamily = deepFontFamily,
             fontWeight = FontWeight.Bold,
