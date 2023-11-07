@@ -7,6 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.app.MainViewModel
+import com.example.app.di.HiltApplication
 import com.example.app.presentation.screen.card.CardScreen
 import com.example.app.presentation.screen.carddetail.CardDetailScreen
 import com.example.app.presentation.screen.cardlist.CardListScreen
@@ -26,7 +27,7 @@ fun NavGraph(
 ){
     NavHost(
         navController = navController,
-        startDestination = Screen.Start.route
+        startDestination = if (HiltApplication.pref.autoLogin) Screen.PutNfc.route else Screen.Start.route
     ){
         composable(route = Screen.Start.route) {
             StartScreen(navController = navController)
