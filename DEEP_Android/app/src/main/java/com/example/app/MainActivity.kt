@@ -38,9 +38,6 @@ import com.example.app.presentation.navigation.NavGraph
 import com.example.app.presentation.screen.start.viewmodel.StartViewModel
 import com.example.app.ui.theme.DEEP_AndroidTheme
 import com.example.app.util.TAG
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.common.api.ApiException
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.IOException
 
