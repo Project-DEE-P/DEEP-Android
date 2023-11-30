@@ -13,5 +13,5 @@
 그래서 저희는 NFC 명함 스티커라는 색다른 방식의 명함 서비스, **DEE:P**을 개발하게 되었습니다.
 
 # Team
-[@PARAOOO](https://github.com/PARAOOO)
+[@PARAOOO](https://github.com/PARAOOO) </br>
 [@stev3j](https://www.notion.so/stev3j/845cb047a86443e9847078b25a54f204)
